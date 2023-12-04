@@ -1,0 +1,8 @@
+vendor/
+node_modules/
+.env
+.auth.json
+.idea
+config/config.php
+/app/dist/
+cache/

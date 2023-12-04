@@ -1,0 +1,27 @@
+.font-size-s9 {
+    font-size: var(--font-size-s9);
+}
+.font-size-s8 {
+    font-size: var(--font-size-s8);
+}
+.font-size-s7 {
+    font-size: var(--font-size-s7);
+}
+.font-size-s6 {
+    font-size: var(--font-size-s6);
+}
+.font-size-s5 {
+    font-size: var(--font-size-s5);
+}
+.font-size-s4 {
+    font-size: var(--font-size-s4);
+}
+.font-size-s3 {
+    font-size: var(--font-size-s3);
+}
+.font-size-s2 {
+    font-size: var(--font-size-s2);
+}
+.font-size-s1 {
+    font-size: var(--font-size-s1);
+}

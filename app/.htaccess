@@ -1,0 +1,9 @@
+DirectorySlash Off
+RewriteEngine On
+RewriteBase /
+
+Options -Indexes
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /b24/index.php
