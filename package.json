@@ -16,9 +16,13 @@
     "bootstrap-4-grid": "^3.4.0",
     "canvas-confetti": "^1.6.0",
     "dotenv-webpack": "^8.0.1",
-    "reset-css": "^5.0.1",
+    "primeicons": "^6.0.1",
+    "primevue": "^3.42.0",
+    "skyweb24.vue-adv": "^1.0.4",
+    "skyweb24.vue-review": "^1.0.4",
     "vue": "^3.2.36",
     "vue-loader": "^17.0.0",
+    "vue-router": "^4.2.5",
     "vuex": "^4.0.2"
   }
 }

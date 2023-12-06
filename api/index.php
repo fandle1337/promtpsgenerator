@@ -1,22 +1,24 @@
 <?php
 declare(strict_types=1);
 
+use App\Controller\ControllerInstall;
+use App\Controller\ControllerSettings;
+use App\Controller\ControllerUninstall;
 use App\RouterFacade;
-use App\Controller\ControllerApp;
 
 require_once dirname(__DIR__) . "/config/bootstrap.php";
-
 
 $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
     $_SERVER, $_GET, $_POST, $_COOKIE, $_FILES
 );
 
-
 $router = RouterFacade::getInstance()->getRouter();
 
 // map a route
-$router->map('GET', DIR_API . '/install/', [ControllerApp::class, 'install']);
+$router->map('GET', DIR_API . '/app/settings/', ControllerSettings::class);
 
+$router->map('GET', DIR_API . '/install/', ControllerInstall::class);
+$router->map('GET', DIR_API . '/uninstall/', ControllerUninstall::class);
 
 
 $response = $router->dispatch($request);

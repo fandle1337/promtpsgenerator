@@ -24,7 +24,3 @@ $dotenv->load();
 if(file_exists(dirname(__DIR__) . "/config/config.php")) {
     $_REQUEST = require_once dirname(__DIR__) . "/config/config.php";
 }
-
-
-
-

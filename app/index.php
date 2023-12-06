@@ -23,8 +23,10 @@ require_once dirname(__DIR__) . "/config/bootstrap.php";
 <body>
 
 
+<div class="container-fluid">
+    <div id="app"></div>
+</div>
 
-<div id="app"></div>
 <script>
     const AUTH_OBJECT = <?=(new \Sw24\Bitrix24Auth\Bitrix24Client())->getAuthObject();?>;
     const PLACEMENT_OPTIONS = <?=$_REQUEST['PLACEMENT_OPTIONS'] ?? '{}';?>;

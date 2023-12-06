@@ -1,14 +1,16 @@
 @import "vars.css";
 @import "fonts.css";
 @import "font-size.css";
+@import "colors.css";
 
-@import "reset-css";
+@import 'primeicons/primeicons.css';
 @import "bootstrap-4-grid";
 
 b {
     font-weight: bold;
 }
-body{
+
+body {
     font-family: 'Open Sans', sans-serif;
     font-size: var(--font-size-s6);
     line-height: 1.3;
