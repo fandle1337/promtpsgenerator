@@ -30,6 +30,7 @@
                                     class="mb-2 min-width"
                                     label="Удалить"
                                     size="small"
+                                    severity="danger"
                                 />
                                 <Button
                                     class="mb-2 min-width"

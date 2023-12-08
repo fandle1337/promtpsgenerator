@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Repository;
-
-use App\Service\Rest\Bx24BatchBuilder;
+namespace App\Repository\Rest;
 
 class RepositoryUser extends RepositoryRestAbstract
 {

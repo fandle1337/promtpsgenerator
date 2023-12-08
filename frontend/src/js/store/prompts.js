@@ -74,7 +74,10 @@ export default {
                     }
                 })
             })
-        }
+        },
+        updatePromptList(state, value) {
+            state.promptsList = value
+        },
     },
     actions: {
         addIconToPlacement({commit}) {
@@ -89,7 +92,17 @@ export default {
         },
         addIconsToPrompts({commit}) {
             commit('addIconsToPrompts')
-        }
+        },
+        async fetchPromptList(context, payload) {
+            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/list/', {
+              method: 'POST',
+              body: JSON.stringify(payload)
+            })
+        },
+        async updatePromptList(context, payload) {
+            const response = await context.dispatch('fetchPromptList', payload)
+            context.commit('updatePromptList', response)
+        },
     },
     getters: {}
 }

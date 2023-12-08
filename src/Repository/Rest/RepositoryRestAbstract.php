@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Rest;
 
-use App\Interfaces\InterfaceRepository;
+use App\Repository\RepositoryAbstract;
 use Bitrix24\Bitrix24;
 
 
-class RepositoryRestAbstract implements InterfaceRepository
+class RepositoryRestAbstract extends RepositoryAbstract
 {
     protected Bitrix24 $client;
 

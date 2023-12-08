@@ -31,11 +31,20 @@ import {useRouter} from "vue-router";
 const store = useStore()
 const router = useRouter()
 
+const payload = {
+    showTemplates: store.state.prompts.filter.showTemplates,
+    category: store.state.prompts.filter.placement
+}
+
+store.dispatch('prompts/updatePromptList', payload).then(() => {
+    store.dispatch('prompts/addIconsToPrompts')
+})
+
 store.dispatch('prompts/addIconToPlacement')
-store.dispatch('prompts/addIconsToPrompts')
+
 
 const addPrompt = function () {
-    router.push('./new-prompt/')
+    router.push('/b24/new-prompt/')
 }
 
 </script>
