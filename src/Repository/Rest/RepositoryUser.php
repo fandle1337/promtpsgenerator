@@ -16,4 +16,11 @@ class RepositoryUser extends RepositoryRestAbstract
         $r = $this->client->call("user.admin");
         return $r['result'] ?? false;
     }
+
+    public function getCurrentUserId(): int
+    {
+        return self::revealResponse(
+            $this->client->call("user.current")
+        )['ID'];
+    }
 }

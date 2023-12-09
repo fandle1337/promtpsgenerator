@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use App\Controller\ControllerInstall;
 use App\Controller\ControllerPrompt;
-use App\Controller\ControllerSettings;
+use App\Controller\ControllerAppSettings;
 use App\Controller\ControllerUninstall;
 use App\RouterFacade;
 
@@ -16,7 +16,7 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
 $router = RouterFacade::getInstance()->getRouter();
 
 // map a route
-$router->map('GET', DIR_API . '/app/settings/', ControllerSettings::class);
+$router->map('GET', DIR_API . '/app/settings/', ControllerAppSettings::class);
 $router->map('POST', DIR_API . '/app/prompt/list/', ControllerPrompt::class);
 
 $router->map('GET', DIR_API . '/install/', ControllerInstall::class);

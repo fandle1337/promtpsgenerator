@@ -16,7 +16,7 @@ require_once dirname(__DIR__) . "/config/bootstrap.php";
     <link rel="stylesheet" href="https://dev.1c-bitrix.ru/bitrix/js/ui/alerts/src/ui.alert.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="<?=$_ENV['WORK_DIRECTORY']?>/dist/content.bundle.css">
+    <link rel="stylesheet" href="<?=$_ENV['WORK_DIRECTORY']?>/app/dist/content.bundle.css">
     <script src="//api.bitrix24.com/api/v1/"></script>
     <title>Стартовая страница</title>
 </head>
@@ -31,7 +31,7 @@ require_once dirname(__DIR__) . "/config/bootstrap.php";
     const AUTH_OBJECT = <?=(new \Sw24\Bitrix24Auth\Bitrix24Client())->getAuthObject();?>;
     const PLACEMENT_OPTIONS = <?=$_REQUEST['PLACEMENT_OPTIONS'] ?? '{}';?>;
 </script>
-<script src="<?=$_ENV['WORK_DIRECTORY']?>/dist/content.bundle.js"></script>
+<script src="<?=$_ENV['WORK_DIRECTORY']?>/app/dist/content.bundle.js"></script>
 
 </body>
 </html>
