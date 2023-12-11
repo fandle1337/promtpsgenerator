@@ -43,6 +43,9 @@ const displayTemplates = computed(() => store.state.prompts.options.showTemplate
 const changeTemplates = function (event) {
     store.state.prompts.options.showTemplates = event
     store.state.prompts.filter.showTemplates = event
+    store.dispatch('prompts/updatePromptList').then(() => {
+        store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+    })
 }
 </script>
 

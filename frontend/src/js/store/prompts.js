@@ -1,4 +1,5 @@
 import RequestBuilder from "../class/RequestBuilder";
+import OptionList from "../class/OptionList";
 
 /**
  *  @AUTH_OBJECT объект авторизации API
@@ -8,55 +9,29 @@ export default {
     namespaced: true,
     state() {
         return {
-            promptsList: [
-                {
-                    code: 'rest_birthday',
-                    translate: {
-                        ru: 'Поздравление',
-                        en: 'greetings',
-                    },
-                    prompt: 'Поздравь с днем рождения официально',
-                    categories: ['tasks', 'chat'],
-                    icon: 'fire',
-                    parentCode: null,
-                    sort: 100,
-                    isTemplate: true,
-                },
-                {
-                    code: 'rest_new_year',
-                    translate: {
-                        ru: 'Поздравление с новым годом',
-                        en: 'greetings',
-                    },
-                    prompt: 'Поздравь с новым годом официально',
-                    categories: ['livefeed_comments', 'livefeed'],
-                    icon: 'fire',
-                    parentCode: null,
-                    sort: 100,
-                    isTemplate: false,
-
-                },
-            ],
+            isLoading: false,
+            promptsList: [],
             options: {
-                placements: [
-                    {name: 'Пост ленты новостей', code: 'livefeed', count: 1},
-                    {name: 'Комментарий ленты новостей', code: 'livefeed_comments', count: 1},
-                    {name: 'Текст задачи', code: 'tasks', count: 1},
-                    {name: 'Комментарии задачи', code: 'tasks_comments', count: 1},
-                    {name: 'Чат', code: 'chat', count: 1},
-                    {name: 'Почта', code: 'mail', count: 1},
-                    {name: 'Почта CRM', code: 'mail_crm', count: 1},
-                    {name: 'Сайты', code: 'landing', count: 1}
-                ],
+                placements: OptionList.getCategoryList(),
                 showTemplates: true,
             },
             filter: {
-                placement: 'landing',
+                placement: null,
                 showTemplates: true,
             }
         }
     },
     mutations: {
+        addCountForPlacements(state, promptList) {
+            state.options.placements.forEach(placement => {
+                placement.count = promptList.reduce((count, prompt) => {
+                    if (prompt.categories && prompt.categories.includes(placement.code)) {
+                        return count + 1
+                    }
+                    return count
+                }, 0)
+            })
+        },
         addIconToPlacement(state, {code, icon, color}) {
             const placement = state.options.placements.find(p => p.code === code)
             if (placement) {
@@ -76,22 +51,25 @@ export default {
             })
         },
         updatePromptList(state, value) {
-            state.promptsList = value
+            state.promptsList = value.result
         },
     },
     actions: {
-        addIconToPlacement({commit}) {
-            commit("addIconToPlacement", {code: "livefeed", icon: "pi pi-bookmark-fill", color: "teal-400"})
-            commit("addIconToPlacement", {code: "livefeed_comments", icon: "pi pi-comment", color: "teal-300"})
-            commit("addIconToPlacement", {code: "tasks", icon: "pi pi-check-circle", color: "blue-400"})
-            commit("addIconToPlacement", {code: "tasks_comments", icon: "pi pi-comment", color: "blue-300"})
-            commit("addIconToPlacement", {code: "chat", icon: "pi pi-comments", color: "red-400"})
-            commit("addIconToPlacement", {code: "mail", icon: "pi pi-at", color: "purple-400"})
-            commit("addIconToPlacement", {code: "mail_crm", icon: "pi pi-envelope", color: "purple-300"})
-            commit("addIconToPlacement", {code: "landing", icon: "pi pi-desktop", color: "pink-400"})
+        addIconToPlacement(context) {
+            context.commit("addIconToPlacement", {code: "livefeed", icon: "pi pi-bookmark-fill", color: "teal-400"})
+            context.commit("addIconToPlacement", {code: "livefeed_comments", icon: "pi pi-comment", color: "teal-300"})
+            context.commit("addIconToPlacement", {code: "tasks", icon: "pi pi-check-circle", color: "blue-400"})
+            context.commit("addIconToPlacement", {code: "tasks_comments", icon: "pi pi-comment", color: "blue-300"})
+            context.commit("addIconToPlacement", {code: "chat", icon: "pi pi-comments", color: "red-400"})
+            context.commit("addIconToPlacement", {code: "mail", icon: "pi pi-at", color: "purple-400"})
+            context.commit("addIconToPlacement", {code: "mail_crm", icon: "pi pi-envelope", color: "purple-300"})
+            context.commit("addIconToPlacement", {code: "landing", icon: "pi pi-desktop", color: "pink-400"})
         },
-        addIconsToPrompts({commit}) {
-            commit('addIconsToPrompts')
+        addIconsToPrompts(context) {
+            context.commit('addIconsToPrompts')
+        },
+        addCountForPlacements(context, promptList) {
+            context.commit('addCountForPlacements', promptList)
         },
         async fetchPromptList(context, payload) {
             return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/list/', {
@@ -99,9 +77,37 @@ export default {
               body: JSON.stringify(payload)
             })
         },
-        async updatePromptList(context, payload) {
+        async fetchOptions(context, payload) {
+            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/options/list/', {
+                method: 'GET',
+                body: JSON.stringify(payload)
+            })
+        },
+        async addPrompt(context, payload) {
+            return(new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/add/', {
+              method: 'POST',
+              body: JSON.stringify(payload)
+            })
+        },
+        async updatePromptList(context, payload = {
+            category: this.state.prompts.filter.placement,
+            showTemplates: this.state.prompts.filter.showTemplates
+        }) {
+            this.state.prompts.isLoading = true
             const response = await context.dispatch('fetchPromptList', payload)
             context.commit('updatePromptList', response)
+            await context.dispatch('addIconsToPrompts')
+            this.state.prompts.isLoading = false
+        },
+        async updateOptions(context, payload) {
+            const response = await context.dispatch('fetchOptions', payload)
+            context.commit('updateOptions', response)
+        },
+        async deletePrompt(context, payload) {
+            return(new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/delete/', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
         },
     },
     getters: {}

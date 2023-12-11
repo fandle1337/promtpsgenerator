@@ -1,4 +1,6 @@
 <template>
+    <Toast/>
+    <Preloader :isLoading="isLoading"/>
     <div class="mt-2">
         <h1>CoPilot: Управление промптами</h1>
     </div>
@@ -21,27 +23,30 @@
 </template>
 
 <script setup>
+import Toast from 'primevue/toast';
 import Button from "primevue/button"
 import Filter from "./Form/Filter.vue"
 import Search from "./Form/Search.vue"
 import Prompt from "./Form/Prompt.vue"
 import {useStore} from "vuex"
 import {useRouter} from "vue-router";
+import Preloader from "./UI/Preloader.vue";
+import {computed} from "vue";
 
 const store = useStore()
 const router = useRouter()
 
+const isLoading = computed(() => store.state.prompts.isLoading)
 const payload = {
     showTemplates: store.state.prompts.filter.showTemplates,
     category: store.state.prompts.filter.placement
 }
 
 store.dispatch('prompts/updatePromptList', payload).then(() => {
-    store.dispatch('prompts/addIconsToPrompts')
+    store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
 })
 
 store.dispatch('prompts/addIconToPlacement')
-
 
 const addPrompt = function () {
     router.push('/b24/new-prompt/')
@@ -53,6 +58,7 @@ const addPrompt = function () {
 h1 {
     font-size: 30px;
 }
+
 .row {
     align-items: flex-start;
 }

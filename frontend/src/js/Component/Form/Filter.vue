@@ -52,9 +52,11 @@ const selectedPlacement = computed(() => {
 
 const choosePlacements = function (event) {
     store.state.prompts.filter.placement = event.code
+    store.dispatch('prompts/updatePromptList')
 }
 const clearFilter = function () {
     store.state.prompts.filter.placement = null
+    store.dispatch('prompts/updatePromptList')
 }
 </script>
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 
@@ -11,14 +12,14 @@ class ControllerAbstract implements InterfaceController
     protected function getRequestValue(ServerRequestInterface $request, $key)
     {
 
-        if($getParam = $request->getQueryParams()) {
-            if(!empty($getParam[$key])) {
+        if ($getParam = $request->getQueryParams()) {
+            if (!empty($getParam[$key])) {
                 return $getParam[$key];
             }
         }
 
-        if($postParam = json_decode($request->getBody()->getContents(), true)) {
-            if(!empty($postParam[$key])) {
+        if ($postParam = json_decode($request->getBody()->getContents(), true)) {
+            if (!empty($postParam[$key])) {
                 return $postParam[$key];
             }
         }

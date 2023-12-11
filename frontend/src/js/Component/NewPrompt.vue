@@ -1,4 +1,5 @@
 <template>
+    <Preloader :isLoading="isLoading"/>
     <div class="mt-2">
         <h1>Создание нового промпта</h1>
     </div>
@@ -27,7 +28,7 @@
                     type="text"
                     :modelValue="nameEng"
                     @update:modelValue="changeNameEng"
-                    :class="{'p-invalid': errors.nameEng.value && formSubmitted}"
+                    :class="{'p-invalid': !errors.nameEng.value && formSubmitted}"
                 />
                 <small id="nameEng">На английском языке</small>
             </span>
@@ -46,7 +47,7 @@
                 cols="40"
                 :model-value="prompt"
                 @update:modelValue="changePrompt"
-                :class="{'p-invalid': errors.prompt.value && formSubmitted}"
+                :class="{'p-invalid': !errors.prompt.value && formSubmitted}"
             />
         </div>
         <div class="col-3 col-lg-4">
@@ -75,7 +76,7 @@
                     name="category"
                     :value="category.code"
                     @update:modelValue="changeSelectedCategories"
-                    :class="{'p-invalid': errors.categories.value && formSubmitted}"
+                    :class="{'p-invalid': !errors.categories.value && formSubmitted}"
                 />
                 <label class="mr-5" :for="category.code">{{ category.name }}</label>
             </div>
@@ -94,7 +95,7 @@
                     type="text"
                     :modelValue="code"
                     @update:modelValue="changeCode"
-                    :class="{'p-invalid': errors.code.value && formSubmitted}"
+                    :class="{'p-invalid': !errors.code.value && formSubmitted}"
                 />
                 <small id="code">На английском языке</small>
             </span>
@@ -149,7 +150,7 @@
                     type="text"
                     :modelValue="icon"
                     @update:modelValue="changeIcon"
-                    :class="{'p-invalid': errors.icon.value && formSubmitted}"
+                    :class="{'p-invalid': !errors.icon.value && formSubmitted}"
                 />
                 <small id="icon">Код иконки</small>
             </span>
@@ -168,34 +169,40 @@
             @click="submit"
         />
         <Toast/>
+        <ConfirmPopup/>
         <Button
             severity="danger"
             class="mr-4"
             label="Отменить"
-            @click="cancel"
+            @click="confirmCancel($event)"
         />
     </div>
 </template>
 
 <script setup>
-import Toast from 'primevue/toast';
+import Toast from 'primevue/toast'
 import Dropdown from "primevue/dropdown"
-import Button from 'primevue/button';
-import InputNumber from 'primevue/inputnumber';
-import Checkbox from 'primevue/checkbox';
-import Card from "primevue/card";
-import Textarea from 'primevue/textarea';
-import InputText from "primevue/inputtext";
-import {ref, computed} from "vue";
-import OptionList from "../class/OptionList";
-import {useRoute, useRouter} from "vue-router";
-import {useStore} from "vuex";
-import {useToast} from "primevue/usetoast";
+import Button from 'primevue/button'
+import InputNumber from 'primevue/inputnumber'
+import Checkbox from 'primevue/checkbox'
+import Textarea from 'primevue/textarea'
+import InputText from "primevue/inputtext"
+import {computed, ref} from "vue"
+import OptionList from "../class/OptionList"
+import {useRoute, useRouter} from "vue-router"
+import {useStore} from "vuex"
+import {useToast} from "primevue/usetoast"
+import Preloader from "./UI/Preloader.vue";
+import ConfirmPopup from "primevue/confirmpopup";
+import {useConfirm} from "primevue/useconfirm";
 
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
 const toast = useToast()
+const confirm = useConfirm()
+
+const isLoading = computed(() => store.state.prompts.isLoading)
 
 const nameRu = ref()
 const changeNameRu = function (event) {
@@ -229,7 +236,7 @@ const changeParentCode = function (event) {
     parentCode.value = event
 }
 
-const sorting = ref(500)
+const sorting = ref()
 const changeSorting = function (event) {
     sorting.value = event
 }
@@ -257,19 +264,19 @@ const errors = {
     categories: ref(false),
     code: ref(false),
     icon: ref(false)
-};
+}
 
 const validateInput = (value, refName) => {
     if (!!value) {
-        errors[refName].value = true;
-        return true;
+        errors[refName].value = true
+        return true
     }
-    return false;
-};
+    return false
+}
 
 const formSubmitted = ref(false)
 
-const submit = function () {
+const submit = async function () {
     formSubmitted.value = true
 
     const isNameRuValid = validateInput(nameRu.value, 'nameRu')
@@ -287,14 +294,25 @@ const submit = function () {
         isCodeValid &&
         isIconValid
     ) {
-        toast.add({
+        store.state.prompts.isLoading = true
+        await store.dispatch('prompts/addPrompt', {
+            categories: categories.value,
+            code: code.value,
+            icon: icon.value,
+            prompt: prompt.value,
+            ru_name: nameRu.value,
+            en_name: nameEng.value,
+            parent_code: parentCode.value,
+            sort: sorting.value,
+        })
+        await router.push('/b24/')
+        await toast.add({
             severity: 'success',
             summary: 'Ваш промпт добавлен!',
             detail: 'Можете проверить его на своем портале.',
             life: 3000,
             closable: false,
         })
-        router.push('/b24/')
     } else {
         toast.add({
             severity: 'error',
@@ -305,8 +323,22 @@ const submit = function () {
         })
     }
 }
-const cancel = function () {
-    router.push('/b24/')
+
+const confirmCancel = function (event) {
+    confirm.require({
+        target: event.currentTarget,
+        message: 'Вы уверены, что хотите отменить? Введенные данные не сохранятся.',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            router.push('/b24/')
+        },
+        reject: () => {
+        },
+        acceptLabel: 'Да',
+        rejectLabel: 'Нет',
+        acceptClass: 'p-button-success p-button-sm',
+        rejectClass: 'p-button-danger p-button-sm',
+    })
 }
 </script>
 

@@ -7,14 +7,16 @@ class DtoPrompt extends DtoAbstract
     public function __construct(
         public ?int    $id = null,
         public ?int    $portalId = null,
-        public ?string $name = null,
-        public ?array  $category = null,
+        public ?array  $categories = null,
         public ?string $code = null,
+        public ?string $icon = null,
         public ?string $prompt = null,
-        public ?array  $translate = null,
+        public ?string $ruName = null,
+        public ?string $enName = null,
         public ?string $parentCode = null,
         public ?int    $sort = null,
         public ?string $dateCreated = null,
+        public ?bool   $isTemplate = null,
     )
     {
         parent::__construct();
