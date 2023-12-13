@@ -15,11 +15,11 @@ class RepositoryPrompt extends RepositoryRestAbstract
         )['result']);
     }
 
-    public function unregister(string $code)
+    public function unregister(string $code): bool
     {
         return $this->client->call(
             'ai.prompt.unregister',
             ['code' => $code]
-        );
+        )['result'];
     }
 }

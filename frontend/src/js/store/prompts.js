@@ -13,11 +13,10 @@ export default {
             promptsList: [],
             options: {
                 placements: OptionList.getCategoryList(),
-                showTemplates: true,
             },
             filter: {
                 placement: null,
-                showTemplates: true,
+                showTemplates: null,
             }
         }
     },
@@ -45,13 +44,17 @@ export default {
                 prompt.categories.forEach(category => {
                     const placement = state.options.placements.find(p => p.code === category)
                     if (placement && placement.icon) {
-                        prompt.iconCategoryList.push({ icon: placement.icon, color: placement.color})
+                        prompt.iconCategoryList.push({icon: placement.icon, color: placement.color})
                     }
                 })
             })
         },
         updatePromptList(state, value) {
             state.promptsList = value.result
+        },
+        updateFilter(state, value) {
+            state.filter.showTemplates = value.result.showTemplates
+            state.filter.placement = value.result.placement
         },
     },
     actions: {
@@ -71,24 +74,6 @@ export default {
         addCountForPlacements(context, promptList) {
             context.commit('addCountForPlacements', promptList)
         },
-        async fetchPromptList(context, payload) {
-            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/list/', {
-              method: 'POST',
-              body: JSON.stringify(payload)
-            })
-        },
-        async fetchOptions(context, payload) {
-            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/options/list/', {
-                method: 'GET',
-                body: JSON.stringify(payload)
-            })
-        },
-        async addPrompt(context, payload) {
-            return(new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/add/', {
-              method: 'POST',
-              body: JSON.stringify(payload)
-            })
-        },
         async updatePromptList(context, payload = {
             category: this.state.prompts.filter.placement,
             showTemplates: this.state.prompts.filter.showTemplates
@@ -103,8 +88,42 @@ export default {
             const response = await context.dispatch('fetchOptions', payload)
             context.commit('updateOptions', response)
         },
+        async updateFilter(context, payload) {
+            const response = await context.dispatch('fetchFilter')
+            context.commit('updateFilter', response)
+        },
+        async fetchPromptList(context, payload) {
+            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/list/', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+        },
+        async fetchOptions(context, payload) {
+            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/options/list/', {
+                method: 'GET',
+                body: JSON.stringify(payload)
+            })
+        },
+        async addPrompt(context, payload) {
+            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/add/', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+        },
         async deletePrompt(context, payload) {
-            return(new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/delete/', {
+            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/prompt/delete/', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+        },
+        async copyTemplate(context, payload) {
+            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/template/copy/', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+        },
+        async fetchFilter(context, payload) {
+            return (new RequestBuilder(AUTH_OBJECT)).fetch('/api/app/filter/get/', {
                 method: 'POST',
                 body: JSON.stringify(payload)
             })

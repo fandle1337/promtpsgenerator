@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Aggregator\AggregatorFilter;
+use App\Enum\EnumResponseStatus;
 use App\Resource\ResourcePrompt;
 use App\Response\Response;
+use App\Service\ServiceFilter;
 use App\Service\ServicePrompt;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -13,6 +15,7 @@ class ControllerPromptList extends ControllerAbstract
     public function __construct(
         protected ServicePrompt    $servicePrompt,
         protected AggregatorFilter $aggregatorFilter,
+        protected ServiceFilter    $serviceFilter,
     )
     {
     }
@@ -24,9 +27,12 @@ class ControllerPromptList extends ControllerAbstract
             $this->getRequestValue($request, 'category'),
         );
 
+        $promptList = $this->servicePrompt->list($dtoFilter);
+        $this->serviceFilter->set($dtoFilter);
+
         return Response::toArray(
             ResourcePrompt::toArray(
-                $this->servicePrompt->list($dtoFilter)
+                $promptList
             )
         );
     }

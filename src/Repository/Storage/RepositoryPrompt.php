@@ -49,15 +49,13 @@ class RepositoryPrompt
             'prompt' => $dtoPrompt->prompt,
             'parent_code' => $dtoPrompt->parentCode,
             'sort' => $dtoPrompt->sort,
-            'date_created' => $dtoPrompt->dateCreated,
+            'date_created' => $dtoPrompt->dateCreated ?? date('Y-m-d H:i:s'),
         ]);
 
         if (empty($id)) {
             return false;
-        } else {
-            return true;
         }
-
+        return true;
     }
 
     public function deleteById(int $promptId, int $portalId): bool

@@ -24,6 +24,7 @@ class ResourcePrompt
                 ],
                 'parentCode' => $dto->parentCode,
                 'sort' => $dto->sort,
+                'icon' => $dto->icon,
                 'dateCreated' => $dto->dateCreated,
             ];
             if ($dto->isTemplate) {

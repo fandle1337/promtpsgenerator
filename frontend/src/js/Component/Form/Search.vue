@@ -39,9 +39,8 @@ import {useStore} from "vuex";
 
 const store = useStore()
 const search = ref()
-const displayTemplates = computed(() => store.state.prompts.options.showTemplates)
+const displayTemplates = computed(() => store.state.prompts.filter.showTemplates)
 const changeTemplates = function (event) {
-    store.state.prompts.options.showTemplates = event
     store.state.prompts.filter.showTemplates = event
     store.dispatch('prompts/updatePromptList').then(() => {
         store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)

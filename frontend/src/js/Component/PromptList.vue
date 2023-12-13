@@ -37,16 +37,6 @@ const store = useStore()
 const router = useRouter()
 
 const isLoading = computed(() => store.state.prompts.isLoading)
-const payload = {
-    showTemplates: store.state.prompts.filter.showTemplates,
-    category: store.state.prompts.filter.placement
-}
-
-store.dispatch('prompts/updatePromptList', payload).then(() => {
-    store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
-})
-
-store.dispatch('prompts/addIconToPlacement')
 
 const addPrompt = function () {
     router.push('/b24/new-prompt/')

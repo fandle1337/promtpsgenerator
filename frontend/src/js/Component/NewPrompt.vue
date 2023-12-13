@@ -202,23 +202,32 @@ const route = useRoute()
 const toast = useToast()
 const confirm = useConfirm()
 
+const receivedPrompt = router.currentRoute.value.query
+
 const isLoading = computed(() => store.state.prompts.isLoading)
 
-const nameRu = ref()
+const nameRu = ref(receivedPrompt.ruName)
 const changeNameRu = function (event) {
     nameRu.value = event
 }
-const nameEng = ref()
+const nameEng = ref(receivedPrompt.enName)
 const changeNameEng = function (event) {
     nameEng.value = event
 }
 
-const prompt = ref('')
+const prompt = ref(receivedPrompt.prompt)
 const changePrompt = function (event) {
     prompt.value = event
 }
 
-const categories = ref([])
+const formatForCategories = function (categories) {
+    if (typeof categories === "string") {
+        return [categories]
+    }
+    return categories
+}
+
+const categories = ref(formatForCategories(receivedPrompt.categories))
 const categoryList = computed(() => {
     return OptionList.getCategoryList()
 })
@@ -226,22 +235,22 @@ const changeSelectedCategories = function (event) {
     categories.value = event
 }
 
-const code = ref('rest_')
+const code = ref(receivedPrompt.code ?? 'rest_')
 const changeCode = function (event) {
     code.value = event
 }
 
-const parentCode = ref()
+const parentCode = ref(receivedPrompt.parentCode)
 const changeParentCode = function (event) {
     parentCode.value = event
 }
 
-const sorting = ref()
+const sorting = ref(receivedPrompt.sort)
 const changeSorting = function (event) {
     sorting.value = event
 }
 
-const icon = ref()
+const icon = ref(receivedPrompt.icon)
 const changeIcon = function (event) {
     icon.value = event
 }
@@ -267,6 +276,12 @@ const errors = {
 }
 
 const validateInput = (value, refName) => {
+    if (refName === 'code') {
+        return value !== 'rest_'
+    }
+    if (refName === 'categories') {
+        return value.length > 0
+    }
     if (!!value) {
         errors[refName].value = true
         return true
@@ -282,7 +297,7 @@ const submit = async function () {
     const isNameRuValid = validateInput(nameRu.value, 'nameRu')
     const isNameEngValid = validateInput(nameEng.value, 'nameEng')
     const isPromptValid = validateInput(prompt.value, 'prompt')
-    const isCategoriesValid = validateInput(categories.value, 'categories')
+    let isCategoriesValid = validateInput(categories.value, 'categories')
     const isCodeValid = validateInput(code.value, 'code')
     const isIconValid = validateInput(icon.value, 'icon')
 
@@ -295,23 +310,45 @@ const submit = async function () {
         isIconValid
     ) {
         store.state.prompts.isLoading = true
-        await store.dispatch('prompts/addPrompt', {
-            categories: categories.value,
-            code: code.value,
-            icon: icon.value,
-            prompt: prompt.value,
-            ru_name: nameRu.value,
-            en_name: nameEng.value,
-            parent_code: parentCode.value,
-            sort: sorting.value,
-        })
-        await router.push('/b24/')
-        await toast.add({
-            severity: 'success',
-            summary: 'Ваш промпт добавлен!',
-            detail: 'Можете проверить его на своем портале.',
-            life: 3000,
-            closable: false,
+
+        return new Promise((resolve, reject) => {
+            store.dispatch('prompts/addPrompt', {
+                categories: categories.value,
+                code: code.value,
+                icon: icon.value,
+                prompt: prompt.value,
+                ru_name: nameRu.value,
+                en_name: nameEng.value,
+                parent_code: parentCode.value,
+                sort: sorting.value,
+            }).then(() => {
+                router.push('/b24/').then(() => {
+                    toast.add({
+                        severity: 'success',
+                        summary: 'Ваш промпт добавлен!',
+                        detail: 'Можете проверить его на своем портале.',
+                        life: 3000,
+                        closable: false,
+                    })
+                    store.dispatch('prompts/updatePromptList').then(() => {
+                        store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+                    })
+                    resolve()
+                })
+            }).catch((error) => {
+                toast.add({
+                    severity: 'error',
+                    summary: 'Ошибка!',
+                    detail: error.message,
+                    life: 3000,
+                    closable: false,
+                })
+                errors.code.value = false
+                reject(error)
+            })
+                .finally(() => {
+                    store.state.prompts.isLoading = false
+                })
         })
     } else {
         toast.add({
@@ -321,6 +358,8 @@ const submit = async function () {
             life: 3000,
             closable: false,
         })
+
+        // return Promise.reject(new Error('Ошибка валидации'))
     }
 }
 

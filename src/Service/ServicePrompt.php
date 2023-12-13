@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Dto\DtoFilter;
 use App\Dto\DtoPrompt;
+use App\Dto\DtoTemplate;
 use App\Repository\Rest\RepositoryPrompt as RepositoryRestPrompt;
 use App\Repository\Storage\RepositoryPortal;
 use App\Repository\Storage\RepositoryPrompt;
@@ -44,12 +45,32 @@ class ServicePrompt extends ServiceAbstract
 
     public function list(DtoFilter $dtoFilter): array
     {
+
         if ($dtoFilter->showTemplates) {
             $templateList = $this->repositoryTemplate->getAll($dtoFilter);
             $promptList = $this->repositoryPrompt->getByPortalId($dtoFilter, $this->dtoPortal->id);
 
-            return array_merge($promptList, $templateList);
+            return array_merge($promptList, $this->getNonInstallTemplateList($templateList, $promptList));
         }
         return $this->repositoryPrompt->getByPortalId($dtoFilter, $this->dtoPortal->id);
+    }
+
+    /**
+     * @param DtoTemplate[] $templateList
+     * @param DtoPrompt[] $promptList
+     * @return array
+     */
+    protected function getNonInstallTemplateList(array $templateList, array $promptList): array
+    {
+        $promptCodes = array_column($promptList, 'code');
+
+        $nonInstalledTemplates = array_filter(
+            $templateList,
+            function (DtoTemplate $template) use ($promptCodes) {
+                return !in_array($template->code, $promptCodes);
+            }
+        );
+
+        return array_values($nonInstalledTemplates);
     }
 }

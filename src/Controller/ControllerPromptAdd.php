@@ -36,7 +36,7 @@ class ControllerPromptAdd extends ControllerAbstract
             return Response::toArray('prompt is successfully added');
         }
         return Response::toArray(
-            'adding is failed',
+            'Промпт с таким кодом уже зарегистрирован на портале.',
             EnumResponseStatus::STATUS_ERROR,
             500
         );

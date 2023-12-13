@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Controller\ControllerFilterGet;
 use App\Controller\ControllerPromptAdd;
 use App\Controller\ControllerInstall;
 use App\Controller\ControllerPromptDelete;
@@ -23,7 +24,8 @@ $router->map('GET', DIR_API . '/app/settings/', ControllerAppSettings::class);
 $router->map('POST', DIR_API . '/app/prompt/list/', ControllerPromptList::class);
 $router->map('POST', DIR_API . '/app/prompt/add/', ControllerPromptAdd::class);
 $router->map('POST', DIR_API . '/app/prompt/delete/', ControllerPromptDelete::class);
-$router->map('POST', DIR_API . '/app/prompt/copy/', ControllerTemplateCopy::class);
+$router->map('POST', DIR_API . '/app/template/copy/', ControllerTemplateCopy::class);
+$router->map('POST', DIR_API . '/app/filter/get/', ControllerFilterGet::class);
 
 $router->map('GET', DIR_API . '/install/', ControllerInstall::class);
 $router->map('GET', DIR_API . '/uninstall/', ControllerUninstall::class);

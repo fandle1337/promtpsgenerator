@@ -1,5 +1,15 @@
 <template>
-    <div class="border mt-3" v-if="promptList.length === 0">
+    <div class="border mt-3" v-if="promptList.length === 0 && isLoading">
+        <Card>
+            <template #title>
+                Ваши промпты загружаются.
+            </template>
+            <template #content>
+                Подождите, пожалуйста.
+            </template>
+        </Card>
+    </div>
+    <div class="border mt-3" v-if="promptList.length === 0 && !isLoading">
         <Card>
             <template #title>
                 У вас нет добавленных промптов.
@@ -36,6 +46,7 @@
                                     label="Установить"
                                     size="small"
                                     severity="success"
+                                    @click="copyTemplate(prompt.id)"
                                 />
                                 <Button
                                     v-else
@@ -49,7 +60,7 @@
                                     class="mb-2 min-width"
                                     label="Создать на основе"
                                     size="small"
-                                    @click="addBasedOn"
+                                    @click="addBasedOn(prompt)"
                                 />
                             </div>
                         </div>
@@ -67,11 +78,13 @@ import Button from "primevue/button";
 import Card from "primevue/card";
 import {useStore} from "vuex";
 import {computed} from "vue";
-
+import {useRouter} from "vue-router";
 
 const store = useStore()
 const confirm = useConfirm()
+const router = useRouter()
 
+const isLoading = computed(() => store.state.prompts.isLoading)
 const promptList = computed(() => store.state.prompts.promptsList)
 const deletePrompt = async function (promptId) {
     store.state.prompts.isLoading = true
@@ -93,6 +106,29 @@ const confirmDelete = function (event, id) {
         rejectLabel: 'Нет',
         acceptClass: 'p-button-success p-button-sm',
         rejectClass: 'p-button-danger p-button-sm',
+    })
+}
+
+const copyTemplate = async function (templateId) {
+    store.state.prompts.isLoading = true
+    await store.dispatch('prompts/copyTemplate', {id: templateId})
+    await store.dispatch('prompts/updatePromptList')
+    await store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+}
+
+const addBasedOn = function (prompt) {
+    router.push({
+        path: '/b24/new-prompt/',
+        query: {
+            ruName: prompt.translate.ru,
+            enName: prompt.translate.en,
+            prompt: prompt.prompt,
+            categories: prompt.categories,
+            code: prompt.code,
+            parentCode: prompt.parentCode,
+            sort: prompt.sort,
+            icon: prompt.icon,
+        }
     })
 }
 
