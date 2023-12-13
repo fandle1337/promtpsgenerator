@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\Storage\RepositoryPortal;
+use App\Repository\Storage\RepositoryPrompt;
 use App\Response\Response;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -10,6 +11,7 @@ class ControllerUninstall extends ControllerAbstract
 {
     public function __construct(
         protected RepositoryPortal $repositoryPortal,
+        protected RepositoryPrompt $repositoryPrompt,
     )
     {
     }
@@ -18,10 +20,10 @@ class ControllerUninstall extends ControllerAbstract
     {
         $b24client = (new \Sw24\Bitrix24Auth\Bitrix24Client())->getClientUnInstall();
 
-        $portal = $this->repositoryPortal->getByDomain($b24client->getDomain());
-        $this->repositoryPortal->uninstallByDomain($portal->domain);
-
-        return Response::toArray('Uninstall is successfully don!');
-
+        $dtoPortal = $this->repositoryPortal->getByDomain($b24client->getDomain());
+        $this->repositoryPortal->uninstallByDomain($dtoPortal->domain);
+        $this->repositoryPrompt->deleteAllByPortalId($dtoPortal->id);
+        
+        return Response::toArray('Uninstall is successfully done!');
     }
 }

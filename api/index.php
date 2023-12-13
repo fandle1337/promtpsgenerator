@@ -27,8 +27,8 @@ $router->map('POST', DIR_API . '/app/prompt/delete/', ControllerPromptDelete::cl
 $router->map('POST', DIR_API . '/app/template/copy/', ControllerTemplateCopy::class);
 $router->map('POST', DIR_API . '/app/filter/get/', ControllerFilterGet::class);
 
-$router->map('GET', DIR_API . '/install/', ControllerInstall::class);
-$router->map('GET', DIR_API . '/uninstall/', ControllerUninstall::class);
+$router->map('POST', DIR_API . '/install/', ControllerInstall::class);
+$router->map('POST', DIR_API . '/uninstall/', ControllerUninstall::class);
 
 
 $response = $router->dispatch($request);

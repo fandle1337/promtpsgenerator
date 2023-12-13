@@ -4,14 +4,15 @@ namespace App\Service;
 
 use App\Dto\DtoPortal;
 use App\Repository\Storage\RepositoryPortal;
+use App\Repository\Storage\RepositoryPrompt;
 
-class ServicePortal extends ServiceAbstract
+class ServicePortal
 {
     public function __construct(
-        protected RepositoryPortal $repositoryPortal
+        protected RepositoryPortal $repositoryPortal,
+        protected RepositoryPrompt $repositoryPrompt,
     )
     {
-        parent::__construct($repositoryPortal);
     }
 
     public function register(DtoPortal $dtoPortal): bool

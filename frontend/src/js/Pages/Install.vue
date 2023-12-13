@@ -43,7 +43,7 @@ export default {
     },
     async mounted()
     {
-        (new RequestBuilder(AUTH_OBJECT)).fetch("/b24/api/install/", {
+        (new RequestBuilder(AUTH_OBJECT)).fetch("/api/install/", {
             method: 'POST',
         }).then(e => {
             this.isLoad = false;

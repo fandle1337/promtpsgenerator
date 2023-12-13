@@ -83,4 +83,12 @@ class RepositoryPrompt
 
         return $result->code;
     }
+
+    public function deleteAllByPortalId(int $portalId): bool
+    {
+        $result = ModelPrompt::where('portal_id', $portalId)
+            ->delete();
+
+        return $result > 0;
+    }
 }
