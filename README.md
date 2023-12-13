@@ -1,93 +1,20 @@
-# Установка приложения
-
+# Развёртывание приложения
 ---
-Внести адреса репозитория приватных пакетов
 ---
+1. Переименовать auth.json.template и .env.template в .auth.json и .env.
+2. Заполнить в .env данные для доступа к базе данных
+3. Добавить ключи авторизации в .auth.json.
+4. Выполнить установку пакетов composer и npm.
 ```
-composer config --global --editor
+composer install
+npm ci
 ```
-
-В открывшемся редакторе внести код
-
+5. Выполнить миграции
 ```
-{
-    "config": {
-    "disable-tls": true
-    },
-"repositories": [
-{
-     "type": "git",
-     "url": "git@gitflic.ru:skyweb24/skeleton.git"
-},
-{
-     "type": "git",
-     "url": "git@gitflic.ru:skyweb24/composerpackage-sw24-bitrix24-cache.git"
-},
-{
-     "type": "git",
-     "url": "git@gitflic.ru:skyweb24/composerpackage-sw24-rest-sdk.git"
-},
-{
-     "type": "git",
-     "url": "git@gitflic.ru:skyweb24/composerpackage-sw24-bitrix24-auth.git"
-}
-]
-}
+vendor/bin/phinx migrate -e development
 ```
-
----
-
-Приложение необходимо развернуть обязательно в директории ```/b24/``` !!!
----
-
-Выполните команду в консоле внутри директории ```/b24/```
-
+6. Добавить в таблицу portals запись с доменом из .auth.json, другие поля могут быть любыми
+7. Запустить приложение
 ```
-composer create-project skyweb24/skeleton  .
+npm run watch
 ```
----
-
-Выполнить команду в корне проекта ```/b24/```
-
-```
-npm install
-```
----
-
-Выполнить команду в корне проекта  ```/b24/``` для сборки фронта
-
-```
-npm run build
-```
----
-
-Скопируйте файл ```.env.template``` с новым названием ```.env```<br>
-
----
-
-Если вы разрабатываете локально, Скопируйте файл ```.auth.json.template``` с новым названием ```.auth.json```. И заполните его
-
----
-
-Сайт будет доступен по ```site.ru/b24/index.php```
-
-# Директории
-
-+ Директори для API ```/b24/api/```<br>
-+ Директория для Фронт ```/b24/app/```
-
-При обращении к http://site.ru/b24/index.php все запросы отправляются на директорию ```/b24/app/index.php```.<br>
-При обращении к http://site.ru/b24/api/index.php все запросы отправляются на директорию ```/b24/api/index.php```.
-
-
-# Дополнительно
----
-Скрипт получения авторизации фрейма:<br>
----
-JSON.stringify({"domain": location.hostname, "access_token": document.querySelector("input[name='AUTH_ID']").value,"refresh_token": document.querySelector("input[name='REFRESH_ID']").value, "member_id": document.querySelector("input[name='member_id']").value, "dateStart": 0, "dateEnd": 0});
-
-
-
-
-
-
