@@ -4,17 +4,26 @@
     <div class="mt-2">
         <h1>CoPilot: Управление промптами</h1>
     </div>
-    <Button
-        label="Создать новый промпт"
-        @click="addPrompt"
-    />
+    <div class="row">
+        <div class="col-2 col-md-3 col-xl-3">
+            <Button
+                severity="success"
+                icon="pi pi-plus"
+                label="Создать промпт"
+                @click="addPrompt"
+            />
+        </div>
+        <div class="mt-3 col-7 col-md-8 col-xl-8 d-flex justify-content-end">
+            <Search/>
+        </div>
+    </div>
+
     <div class="content">
         <div class="row mt-3">
-            <div class="col-3 col-md-4 col-xl-3 mt-1 pr-2">
+            <div class="col-2 col-md-3 col-xl-3 mt-1 pr-2">
                 <Filter/>
             </div>
             <div class="col-7 col-md-8 col-xl-8 mt-1">
-                <Search/>
                 <Prompt/>
             </div>
         </div>

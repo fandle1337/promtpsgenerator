@@ -1,14 +1,14 @@
 <template>
     <div class="d-flex justify-content-between align-items-center">
-        <span class="p-input-icon-left">
+<!--        <span class="p-input-icon-left">
           <i class="pi pi-search"/>
           <InputText
               v-model="search"
               placeholder="Поиск"
               size="normal"
           />
-        </span>
-        <div class="d-flex">
+        </span>-->
+        <div class="d-flex justify-content-center align-content-center align-items-center">
             <div class="min-width-5">
                 <Tag
                     class="min-width-5"

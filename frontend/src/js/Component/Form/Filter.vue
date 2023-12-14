@@ -17,9 +17,13 @@
                     <div :class="['bg-' + slotProps.option.color, 'rounded-full', 'mr-2']">
                         <i :class="[slotProps.option.icon]" style="font-size: 1rem; color: white;"></i>
                     </div>
-                    {{ slotProps.option.name }}
+                    <div class="name">
+                        {{ slotProps.option.name }}
+                    </div>
                 </div>
-                <div><b>{{ slotProps.option.count }}</b></div>
+                <div class="ml-2">
+                    <b>{{ slotProps.option.count }}</b>
+                </div>
             </div>
         </template>
         <template #footer>
@@ -67,10 +71,20 @@ const clearFilter = function () {
 <style scoped>
 .d-flex.justify-content-center b {
     text-align: center;
-    font-size: 25px;
+    font-size: 20px;
 }
+
 .rounded-full {
     border-radius: 25px;
     padding: 10px 12px 9px;
+}
+
+.name {
+    font-size: 15px;
+}
+.p-listbox.p-focus {
+    outline: none;
+    border-color: #d1d5db;
+    box-shadow: none;
 }
 </style>

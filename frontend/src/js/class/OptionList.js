@@ -13,13 +13,13 @@ export default class {
 
     static getCategoryList() {
         return [
-            {name: 'Пост ленты новостей', code: 'livefeed'},
-            {name: 'Комментарий ленты новостей', code: 'livefeed_comments'},
-            {name: 'Текст задачи', code: 'tasks'},
-            {name: 'Комментарии задачи', code: 'tasks_comments'},
+            {name: 'Новости (пост)', code: 'livefeed'},
+            {name: 'Новости (комментарий)', code: 'livefeed_comments'},
+            {name: 'Задачи (текст)', code: 'tasks'},
+            {name: 'Задачи (комментарий)', code: 'tasks_comments'},
             {name: 'Чат', code: 'chat'},
             {name: 'Почта', code: 'mail'},
-            {name: 'Почта CRM', code: 'mail_crm'},
+            {name: 'CRM (почта)', code: 'mail_crm'},
             {name: 'Сайты', code: 'landing'},
         ]
     }

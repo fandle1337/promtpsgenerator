@@ -16,7 +16,7 @@ export default {
             },
             filter: {
                 placement: null,
-                showTemplates: null,
+                showTemplates: true,
             }
         }
     },

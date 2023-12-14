@@ -1,5 +1,5 @@
 <template>
-    <div class="border mt-3" v-if="promptList.length === 0 && isLoading">
+    <div class="border mb-3" v-if="promptList.length === 0 && isLoading">
         <Card>
             <template #title>
                 Ваши промпты загружаются.
@@ -9,7 +9,7 @@
             </template>
         </Card>
     </div>
-    <div class="border mt-3" v-if="promptList.length === 0 && !isLoading">
+    <div class="border mb-3" v-if="promptList.length === 0 && !isLoading">
         <Card>
             <template #title>
                 У вас нет добавленных промптов.
@@ -19,59 +19,63 @@
             </template>
         </Card>
     </div>
-    <div v-for="prompt in promptList">
-        <div class="border mt-3">
-            <Card>
-                <template #title>
-                    {{ prompt.translate.ru }}
-                    <div class="d-inline-block" v-for="iconCategory in prompt.iconCategoryList">
-                        <div :class="['bg-' + iconCategory.color, 'rounded-full', 'mr-2']">
-                            <i :class="[iconCategory.icon]" style="font-size: 1rem; color: white;"></i>
-                        </div>
-                    </div>
-                </template>
-                <template #content>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xl-10 col-lg-9 col-md-8">
-                                <p class="m-0">
-                                    {{ prompt.prompt }}
-                                </p>
-                            </div>
-                            <div class="flex col-xl-2 col-lg-3 col-md-4 d-flex flex-column align-items-center">
-                                <ConfirmPopup/>
-                                <Button
-                                    v-if="prompt.isTemplate"
-                                    class="mb-2 min-width"
-                                    label="Установить"
-                                    size="small"
-                                    severity="success"
-                                    @click="copyTemplate(prompt.id)"
-                                />
-                                <Button
-                                    v-else
-                                    class="mb-2 min-width"
-                                    label="Удалить"
-                                    size="small"
-                                    severity="danger"
-                                    @click="confirmDelete($event, prompt.id)"
-                                />
-                                <Button
-                                    class="mb-2 min-width"
-                                    label="Создать на основе"
-                                    size="small"
-                                    @click="addBasedOn(prompt)"
-                                />
+    <ScrollPanel style="width: 100%; height: 633px">
+        <div v-for="(prompt, index) in promptList" :key="index">
+            <div :class="{ 'border': true, 'mb-3': index < promptList.length - 1 }">
+                <Card>
+                    <template #title>
+                        {{ prompt.translate.ru }}
+                        <div class="d-inline-block" v-for="iconCategory in prompt.iconCategoryList">
+                            <div :class="['bg-' + iconCategory.color, 'rounded-full', 'mr-2']"
+                                 v-tooltip.top="'12321'">
+                                <i :class="[iconCategory.icon]" style="font-size: 1rem; color: white;"></i>
                             </div>
                         </div>
-                    </div>
-                </template>
-            </Card>
+                    </template>
+                    <template #content>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xl-10 col-lg-9 col-md-8">
+                                    <p class="m-0">
+                                        {{ prompt.prompt }}
+                                    </p>
+                                </div>
+                                <div class="flex col-xl-2 col-lg-3 col-md-4 d-flex flex-column align-items-center">
+                                    <ConfirmPopup/>
+                                    <Button
+                                        v-if="prompt.isTemplate"
+                                        class="mb-2 min-width"
+                                        label="Установить"
+                                        size="small"
+                                        severity="success"
+                                        @click="copyTemplate(prompt.id)"
+                                    />
+                                    <Button
+                                        v-else
+                                        class="mb-2 min-width"
+                                        label="Удалить"
+                                        size="small"
+                                        severity="danger"
+                                        @click="confirmDelete($event, prompt.id)"
+                                    />
+                                    <Button
+                                        class="mb-2 min-width"
+                                        label="Создать на основе"
+                                        size="small"
+                                        @click="addBasedOn(prompt)"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </Card>
+            </div>
         </div>
-    </div>
+    </ScrollPanel>
 </template>
 
 <script setup>
+import ScrollPanel from 'primevue/scrollpanel';
 import ConfirmPopup from 'primevue/confirmpopup';
 import {useConfirm} from "primevue/useconfirm";
 import Button from "primevue/button";
