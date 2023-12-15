@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 
-import PromptList from './Component/PromptList.vue';
+import PromptList from './Component/Main.vue';
 import NewPrompt from './Component/NewPrompt.vue';
 
 const route = function (name, path, component) {

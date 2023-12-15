@@ -44,7 +44,11 @@ export default {
                 prompt.categories.forEach(category => {
                     const placement = state.options.placements.find(p => p.code === category)
                     if (placement && placement.icon) {
-                        prompt.iconCategoryList.push({icon: placement.icon, color: placement.color})
+                        prompt.iconCategoryList.push({
+                            icon: placement.icon,
+                            color: placement.color,
+                            name: placement.name,
+                        })
                     }
                 })
             })

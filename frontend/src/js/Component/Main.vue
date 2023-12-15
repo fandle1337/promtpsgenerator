@@ -24,7 +24,7 @@
                 <Filter/>
             </div>
             <div class="col-7 col-md-8 col-xl-8 mt-1">
-                <Prompt/>
+                <PromptList/>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@ import Toast from 'primevue/toast';
 import Button from "primevue/button"
 import Filter from "./Form/Filter.vue"
 import Search from "./Form/Search.vue"
-import Prompt from "./Form/Prompt.vue"
+import PromptList from "./Form/PromptList.vue"
 import {useStore} from "vuex"
 import {useRouter} from "vue-router";
 import Preloader from "./UI/Preloader.vue";
