@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Aggregator\AggregatorPrompt;
 use App\Enum\EnumResponseStatus;
 use App\Response\Response;
-use App\Service\ServicePrompt;
 use App\Service\ServiceTemplate;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -17,7 +15,7 @@ class ControllerTemplateCopy extends ControllerAbstract
     {
     }
 
-    public function __invoke(ServerRequestInterface $request): array
+    public function __invoke(ServerRequestInterface $request): \Laminas\Diactoros\Response
     {
         $templateId = $this->getRequestValue($request, 'id');
 
@@ -25,7 +23,7 @@ class ControllerTemplateCopy extends ControllerAbstract
             return Response::toArray(
                 'this template is already installed',
                 EnumResponseStatus::STATUS_ERROR,
-                500,
+                400,
             );
         }
         return Response::toArray('template is successfully installed');

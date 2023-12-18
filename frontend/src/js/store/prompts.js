@@ -55,11 +55,11 @@ export default {
             })
         },
         updatePromptList(state, value) {
-            state.promptsList = value.result
+            state.promptsList = value
         },
         updateFilter(state, value) {
-            state.filter.showTemplates = value.result.showTemplates
-            state.filter.placement = value.result.placement
+            state.filter.showTemplates = value.showTemplates
+            state.filter.placement = value.placement
         },
     },
     actions: {

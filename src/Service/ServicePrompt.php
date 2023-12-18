@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Dto\DtoFilter;
 use App\Dto\DtoPrompt;
 use App\Dto\DtoTemplate;
+use App\Exception\ExceptionPrompt;
 use App\Repository\Rest\RepositoryPrompt as RepositoryRestPrompt;
 use App\Repository\Storage\RepositoryPortal;
 use App\Repository\Storage\RepositoryPrompt;
@@ -22,16 +23,22 @@ class ServicePrompt extends ServiceAbstract
         parent::__construct($this->repositoryPortal);
     }
 
+    /**
+     * @throws ExceptionPrompt
+     */
     public function add(DtoPrompt $dtoPrompt): bool
     {
         $dtoPrompt->portalId = $this->dtoPortal->id;
 
-        if ($this->repositoryPrompt->isUniqueCodeByPortalId($this->dtoPortal->id, $dtoPrompt->code)) {
-            $this->repositoryPrompt->add($dtoPrompt);
-            return $this->repositoryRestPrompt->register($dtoPrompt);
+        if (!$this->repositoryPrompt->isUniqueCodeByPortalId($this->dtoPortal->id, $dtoPrompt->code)) {
+            throw new ExceptionPrompt('Промпт с таким кодом уже зарегистрирован на портале.');
         }
 
-        return false;
+        if (!$this->repositoryRestPrompt->register($dtoPrompt)) {
+            throw new ExceptionPrompt('Ошибка регистрации, проверьте данные.');
+        }
+
+        return $this->repositoryPrompt->add($dtoPrompt);
     }
 
     public function delete(int $promptId): bool
@@ -73,6 +80,7 @@ class ServicePrompt extends ServiceAbstract
 
         return array_values($nonInstalledTemplates);
     }
+
     public function setCodeForPrompt(): string
     {
         return 'rest_sw_' . $this->dtoPortal->id . '_' . (int)microtime(true);

@@ -19,11 +19,11 @@ export default {
     },
     mutations: {
         updateAppSettings(state, value) {
-            state.appSettings.domain = value.result.domain
-            state.appSettings.moduleCode = value.result.module_code
-            state.appSettings.userId = value.result.user_id
-            state.appSettings.isAdmin = value.result.is_admin
-            state.appSettings.isAvailable = value.result.is_available
+            state.appSettings.domain = value.domain
+            state.appSettings.moduleCode = value.module_code
+            state.appSettings.userId = value.user_id
+            state.appSettings.isAdmin = value.is_admin
+            state.appSettings.isAvailable = value.is_available
         }
     },
     actions: {

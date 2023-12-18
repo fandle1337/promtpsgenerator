@@ -16,7 +16,7 @@ class ControllerAppSettings extends ControllerAbstract
     {
     }
 
-    public function __invoke(ServerRequestInterface $request): array
+    public function __invoke(ServerRequestInterface $request): \Laminas\Diactoros\Response
     {
         return Response::toArray(
             ResourceAppSettings::toArray(

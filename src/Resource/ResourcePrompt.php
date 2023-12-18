@@ -51,11 +51,15 @@ class ResourcePrompt
         ];
 
         if ($dtoPrompt->parentCode) {
-            $parameters['parent_code'] = $dtoPrompt;
+            $parameters['parent_code'] = $dtoPrompt->parentCode;
         }
 
         if ($dtoPrompt->sort) {
-            $parameters['sort'] = $dtoPrompt;
+            $parameters['sort'] = $dtoPrompt->sort;
+        }
+
+        if ($dtoPrompt->section) {
+            $parameters['section'] = $dtoPrompt->section;
         }
 
         return $parameters;

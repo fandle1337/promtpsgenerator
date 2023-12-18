@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Aggregator\AggregatorPrompt;
 use App\Enum\EnumResponseStatus;
 use App\Response\Response;
 use App\Service\ServicePrompt;
@@ -16,7 +15,7 @@ class ControllerPromptDelete extends ControllerAbstract
     {
     }
 
-    public function __invoke(ServerRequestInterface $request): array
+    public function __invoke(ServerRequestInterface $request): \Laminas\Diactoros\Response
     {
         $promptId = $this->getRequestValue($request, 'id');
 
@@ -26,7 +25,7 @@ class ControllerPromptDelete extends ControllerAbstract
         return Response::toArray(
             'deleting is failed',
             EnumResponseStatus::STATUS_ERROR,
-            500
+            400
         );
     }
 

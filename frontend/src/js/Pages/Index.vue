@@ -32,6 +32,10 @@ store.dispatch('prompts/updateFilter').then(() => {
 })
 </script>
 
-<style scoped>
-
+<style>
+.p-tooltip {
+    min-width: 10px;
+    max-width: 320px;
+    width: auto;
+}
 </style>

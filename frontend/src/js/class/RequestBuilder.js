@@ -7,18 +7,14 @@ export default class RequestBuilder
 
     async fetch(path, config)
     {
-        let params = (new URLSearchParams(this.paramList)).toString();
+        let params = (new URLSearchParams(this.paramList)).toString()
         return await fetch(process.env.WORK_DIRECTORY + path + "?" + params.toString(), config)
-            .then(e => e.json())
-            .then(e => this.isError(e))
-    }
-
-    isError(e)
-    {
-        if(e.status === 'error') {
-            throw new Error(e.result)
-        }
-
-        return e;
+            .then(response => response.json())
+            .then(response => {
+                if(response.status !== 'success') {
+                    throw new Error(response.result)
+                }
+                return response.result
+            })
     }
 }

@@ -50,7 +50,7 @@
                 <Textarea
                     class="w-100"
                     id="prompt"
-                    rows="8"
+                    rows="15"
                     :model-value="prompt"
                     @update:modelValue="changePrompt"
                     :class="{'p-invalid': !fieldValid.prompt.value && formSubmitted}"
@@ -63,9 +63,10 @@
                        v-tooltip.right="'Вы можете использовать это'"></i>
                 </label>
 
-                <ScrollPanel style="width: 100%; height: 186px">
+                <ScrollPanel style="width: 100%; height: 326px">
                     <div v-for="marker in markerList">
                         <Button
+                            :severity="marker.btn"
                             class="mb-1"
                             size="small"
                             :label="marker.code"
@@ -87,7 +88,7 @@
                     :model-value="categories"
                     :class="{'w-100': true, 'p-invalid': !fieldValid.categories.value && formSubmitted}"
                     id="categories"
-                    display="chip"
+                    :maxSelectedLabels="3"
                     optionLabel="name"
                     :options="categoryList"
                     placeholder="Выберите инструменты Б24"
@@ -143,6 +144,23 @@
                     id="sorting"
                     :modelValue="sorting"
                     @update:modelValue="changeSorting"
+                />
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-6 d-flex flex-column">
+                <label for="section" class="mb-1">
+                    Параметр section
+                    <i class="pi pi-question-circle ml-2"
+                       v-tooltip="'Выберите секцию, в которой хотите разместить ваш промпт. Необязательный параметр.'"></i>
+                </label>
+                <Dropdown
+                    class="w-100"
+                    id="section"
+                    :options="sectionList"
+                    option-label="name"
+                    :model-value="section"
+                    @update:modelValue="changeSection"
                 />
             </div>
         </div>
@@ -251,6 +269,12 @@ const chooseMarker = function (event) {
     prompt.value += '{' + event.currentTarget.innerText + '}'
 }
 
+const sectionList = computed(() => OptionList.getSectionList())
+const section = ref()
+const changeSection = function (event) {
+    section.value = event
+}
+
 const fieldValid = {
     nameRu: ref(false),
     nameEng: ref(false),
@@ -291,59 +315,23 @@ const formatCategories = function (categories) {
 const submit = async function () {
     formSubmitted.value = true
 
-    const isNameRuValid = validateInput(nameRu.value, 'nameRu')
-    const isNameEngValid = validateInput(nameEng.value, 'nameEng')
-    const isPromptValid = validateInput(prompt.value, 'prompt')
-    const isCategoriesValid = validateInput(categories.value, 'categories')
-    const isIconValid = validateInput(icon.value, 'icon')
+    const nameRuIsValid = validateInput(nameRu.value, 'nameRu')
+    const nameEngIsValid = validateInput(nameEng.value, 'nameEng')
+    const promptIsValid = validateInput(prompt.value, 'prompt')
+    const categoriesIsValid = validateInput(categories.value, 'categories')
+    const iconIsValid = validateInput(icon.value, 'icon')
 
-    if (
-        isNameRuValid &&
-        isNameEngValid &&
-        isPromptValid &&
-        isCategoriesValid &&
-        isIconValid
-    ) {
-        store.state.prompts.isLoading = true
+    const formIsValid = function () {
+        return (
+            nameRuIsValid &&
+            nameEngIsValid &&
+            promptIsValid &&
+            categoriesIsValid &&
+            iconIsValid
+        )
+    }
 
-        return new Promise((resolve, reject) => {
-            store.dispatch('prompts/addPrompt', {
-                categories: formatCategories(categories.value),
-                icon: icon.value,
-                prompt: prompt.value,
-                ru_name: nameRu.value,
-                en_name: nameEng.value,
-                parent_code: parentCode.value,
-                sort: sorting.value,
-            }).then(() => {
-                router.push('/b24/').then(() => {
-                    toast.add({
-                        severity: 'success',
-                        summary: 'Ваш промпт добавлен!',
-                        detail: 'Можете проверить его на своем портале.',
-                        life: 3000,
-                        closable: false,
-                    })
-                    store.dispatch('prompts/updatePromptList').then(() => {
-                        store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
-                    })
-                    resolve()
-                })
-            }).catch((error) => {
-                toast.add({
-                    severity: 'error',
-                    summary: 'Ошибка!',
-                    detail: error.message,
-                    life: 3000,
-                    closable: false,
-                })
-                reject(error)
-            })
-                .finally(() => {
-                    store.state.prompts.isLoading = false
-                })
-        })
-    } else {
+    if (!formIsValid()) {
         toast.add({
             severity: 'error',
             summary: 'Ошибка!',
@@ -351,8 +339,45 @@ const submit = async function () {
             life: 3000,
             closable: false,
         })
+        return
+    }
 
-        // return Promise.reject(new Error('Ошибка валидации'))
+    if (formIsValid()) {
+        store.state.prompts.isLoading = true
+
+        return store.dispatch('prompts/addPrompt', {
+            categories: formatCategories(categories.value),
+            icon: icon.value,
+            prompt: prompt.value,
+            ru_name: nameRu.value,
+            en_name: nameEng.value,
+            parent_code: parentCode.value,
+            sort: sorting.value,
+            section: section.value?.code
+        }).then(() => {
+            router.push('/b24/').then(() => {
+                toast.add({
+                    severity: 'success',
+                    summary: 'Ваш промпт добавлен!',
+                    detail: 'Можете проверить его на своем портале.',
+                    life: 3000,
+                    closable: false,
+                })
+                store.dispatch('prompts/updatePromptList').then(() => {
+                    store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+                })
+            })
+        }).catch((error) => {
+            toast.add({
+                severity: 'error',
+                summary: 'Ошибка!',
+                detail: error.message,
+                life: 3000,
+                closable: false,
+            })
+        }).finally(() => {
+            store.state.prompts.isLoading = false
+        })
     }
 }
 
@@ -375,7 +400,5 @@ const confirmCancel = function (event) {
 </script>
 
 <style scoped>
-.p-tooltip {
-    width: 1000px;
-}
+
 </style>

@@ -17,6 +17,7 @@ class DtoPrompt extends DtoAbstract
         public ?int    $sort = null,
         public ?string $dateCreated = null,
         public ?bool   $isTemplate = null,
+        public ?string $section = null,
     )
     {
         parent::__construct();

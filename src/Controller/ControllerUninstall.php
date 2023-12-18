@@ -16,7 +16,7 @@ class ControllerUninstall extends ControllerAbstract
     {
     }
 
-    public function __invoke(ServerRequestInterface $request): array
+    public function __invoke(ServerRequestInterface $request): \Laminas\Diactoros\Response
     {
         $b24client = (new \Sw24\Bitrix24Auth\Bitrix24Client())->getClientUnInstall();
 

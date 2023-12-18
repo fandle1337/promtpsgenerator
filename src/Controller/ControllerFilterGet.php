@@ -14,7 +14,7 @@ class ControllerFilterGet extends ControllerAbstract
     {
     }
 
-    public function __invoke(): array
+    public function __invoke(): \Laminas\Diactoros\Response
     {
         return Response::toArray(
             ResourceFilter::toArray(

@@ -1,14 +1,19 @@
 <?php
 namespace App\Response;
 use App\Enum\EnumResponseStatus;
+
+
 abstract class ResponseAbstract
 {
-    public static function toArray(mixed $content, $status = EnumResponseStatus::STATUS_SUCCESS, $code = 200): array
+    public static function toArray($data, int $code = 200, $status = EnumResponseStatus::STATUS_SUCCESS): \Laminas\Diactoros\Response
     {
-        return [
-            "code" => $code,
+        $response = new \Laminas\Diactoros\Response;
+
+        $response->getBody()->write(json_encode([
             "status" => $status,
-            "result" => $content
-        ];
+            "result" => $data
+        ]));
+
+        return $response->withStatus($code);
     }
 }

@@ -40,16 +40,17 @@ class RepositoryPrompt
     public function add(DtoPrompt $dtoPrompt): bool
     {
         $id = ModelPrompt::InsertGetId([
-            'portal_id' => $dtoPrompt->portalId,
-            'ru_name' => $dtoPrompt->ruName,
-            'en_name' => $dtoPrompt->enName,
-            'categories' => json_encode($dtoPrompt->categories),
-            'code' => $dtoPrompt->code,
-            'icon' => $dtoPrompt->icon,
-            'prompt' => $dtoPrompt->prompt,
-            'parent_code' => $dtoPrompt->parentCode,
-            'sort' => $dtoPrompt->sort,
+            'portal_id'    => $dtoPrompt->portalId,
+            'ru_name'      => $dtoPrompt->ruName,
+            'en_name'      => $dtoPrompt->enName,
+            'categories'   => json_encode($dtoPrompt->categories),
+            'code'         => $dtoPrompt->code,
+            'icon'         => $dtoPrompt->icon,
+            'prompt'       => $dtoPrompt->prompt,
+            'parent_code'  => $dtoPrompt->parentCode,
+            'sort'         => $dtoPrompt->sort,
             'date_created' => $dtoPrompt->dateCreated ?? date('Y-m-d H:i:s'),
+            'section'      => $dtoPrompt->section,
         ]);
 
         if (empty($id)) {
