@@ -4,7 +4,7 @@
     <div class="mt-2">
         <h1>CoPilot: Управление промптами</h1>
     </div>
-    <div class="row">
+    <div class="row d-flex align-items-center">
         <div class="col-2 col-md-3 col-xl-3">
             <Button
                 severity="success"
@@ -13,7 +13,7 @@
                 @click="addPrompt"
             />
         </div>
-        <div class="mt-3 col-7 col-md-8 col-xl-8 d-flex justify-content-end">
+        <div class="col-7 col-md-8 col-xl-8 d-flex justify-content-end align-items-center">
             <Search/>
         </div>
     </div>

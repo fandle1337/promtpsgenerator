@@ -40,7 +40,7 @@
                 />
             </div>
         </div>
-        <div class="row mt-2">
+        <div class="row mt-4">
             <div class="col-8 d-flex flex-column">
                 <label for="prompt" class="mb-1">
                     Промпт*
@@ -70,12 +70,13 @@
                             size="small"
                             :label="marker.code"
                             @click="chooseMarker"
+                            v-tooltip.right="marker.name"
                         />
                     </div>
                 </ScrollPanel>
             </div>
         </div>
-        <div class="row mt-2">
+        <div class="row mt-4">
             <div class="col-6 d-flex flex-column">
                 <label for="categories" class="mb-1">
                     Инструменты Б24*
@@ -116,7 +117,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-2">
+        <div class="row mt-4">
             <div class="col-6 d-flex flex-column">
                 <label for="parentCode" class="mb-1">
                     Параметр parent_code
@@ -374,5 +375,7 @@ const confirmCancel = function (event) {
 </script>
 
 <style scoped>
-
+.p-tooltip {
+    width: 1000px;
+}
 </style>

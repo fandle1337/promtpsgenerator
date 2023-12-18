@@ -1,8 +1,10 @@
 <template>
-    <Panel toggleable collapsed>
+    <Panel toggleable :collapsed="promptsCollapsed">
         <template #header>
-            <div>
-                {{ prompt.translate.ru }}
+            <div class="d-flex align-items-center justify-content-center align-content-center">
+                <div v-tooltip.left="'Название промпта'" class="mr-2">
+                    {{ prompt.translate.ru }}
+                </div>
                 <div class="d-inline-block" v-for="iconCategory in prompt.iconCategoryList">
                     <div :class="['bg-' + iconCategory.color, 'rounded-full', 'mr-2']"
                          v-tooltip.top="iconCategory.name">
@@ -11,13 +13,13 @@
                 </div>
             </div>
         </template>
-        <template #footer>
+        <template #footer v-if="!prompt.isTemplate">
             <div class="d-flex justify-content-between">
-                <div>
-                    Код промпта: {{ prompt.code }}
+                <div v-tooltip.left="'Код промпта'">
+                    {{ prompt.code }}
                 </div>
-                <div v-if="!prompt.isTemplate">
-                    Дата установки: {{prompt.dateCreated.toLocaleString()}}
+                <div v-tooltip.right="'Дата установки'">
+                    {{formatDate(prompt.dateCreated)}}
                 </div>
             </div>
         </template>
@@ -31,7 +33,9 @@
             </button>
             <Menu ref="menuVisible" id="config_menu" :model="itemsMenu" popup/>
         </template>
-        Текст промпта: "{{ prompt.prompt }}"
+        <div v-tooltip.left="'Текст промпта'">
+            {{ prompt.prompt }}
+        </div>
     </Panel>
 </template>
 
@@ -53,6 +57,8 @@ const props = defineProps({
         type: Object,
     }
 })
+
+const promptsCollapsed = computed(() => store.state.prompts.options.promptsCollapsed)
 
 const deletePrompt = async function (promptId) {
     if (confirm('Вы уверены, что хотите удалить этот промпт?')) {
@@ -117,6 +123,15 @@ const itemsMenu = computed(() => {
 
     return list
 })
+
+const formatDate = function (date) {
+    const dateObject = new Date(date)
+    const day = dateObject.getDate()
+    const month = dateObject.getMonth() + 1
+    const year = dateObject.getFullYear()
+
+    return `${day < 10 ? '0' : ''}${day}.${month < 10 ? '0' : ''}${month}.${year}`
+}
 
 </script>
 

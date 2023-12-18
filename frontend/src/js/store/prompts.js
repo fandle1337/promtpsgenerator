@@ -13,6 +13,7 @@ export default {
             promptsList: [],
             options: {
                 placements: OptionList.getCategoryList(),
+                promptsCollapsed: true,
             },
             filter: {
                 placement: null,
@@ -62,6 +63,9 @@ export default {
         },
     },
     actions: {
+        updatePromptsCollapsed() {
+            this.state.prompts.options.promptsCollapsed = !this.state.prompts.options.promptsCollapsed
+        },
         addIconToPlacement(context) {
             context.commit("addIconToPlacement", {code: "livefeed", icon: "pi pi-bookmark-fill", color: "teal-400"})
             context.commit("addIconToPlacement", {code: "livefeed_comments", icon: "pi pi-comment", color: "teal-300"})

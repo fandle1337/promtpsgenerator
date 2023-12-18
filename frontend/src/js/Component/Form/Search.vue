@@ -1,36 +1,40 @@
 <template>
     <div class="d-flex justify-content-between align-items-center">
-<!--        <span class="p-input-icon-left">
-          <i class="pi pi-search"/>
-          <InputText
-              v-model="search"
-              placeholder="Поиск"
-              size="normal"
-          />
-        </span>-->
-        <div class="d-flex justify-content-center align-content-center align-items-center">
-            <div class="min-width-5">
-                <Tag
-                    class="min-width-5"
-                    value="Мои"
+        <!--        <span class="p-input-icon-left">
+                  <i class="pi pi-search"/>
+                  <InputText
+                      v-model="search"
+                      placeholder="Поиск"
+                      size="normal"
+                  />
+                </span>-->
+        <div class="d-flex justify-content-center align-content-center align-items-center pr-3">
+            <div>
+                <Button
+                    class="mr-5"
+                    :label="getCollapseLabel"
+                    @click="toggleCollapse"
                 />
             </div>
-            <InputSwitch
-                class="ml-3 mr-3"
-                :modelValue="displayTemplates"
-                @update:modelValue="changeTemplates"
-            />
-            <div>
-                <Tag
-                    class="min-width-5"
-                    value="Все промпты"
+            <div class="border d-flex justify-content-center align-content-center align-items-center">
+                <div>
+                    Мои промпты
+                </div>
+                <InputSwitch
+                    class="ml-3 mr-3"
+                    :modelValue="displayTemplates"
+                    @update:modelValue="changeTemplates"
                 />
+                <div>
+                    Все промпты
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import Button from "primevue/button";
 import Tag from 'primevue/tag';
 import InputSwitch from 'primevue/inputswitch';
 import InputText from "primevue/inputtext";
@@ -38,7 +42,6 @@ import {computed, ref} from "vue";
 import {useStore} from "vuex";
 
 const store = useStore()
-const search = ref()
 const displayTemplates = computed(() => store.state.prompts.filter.showTemplates)
 const changeTemplates = function (event) {
     store.state.prompts.filter.showTemplates = event
@@ -46,10 +49,24 @@ const changeTemplates = function (event) {
         store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
     })
 }
+
+const promptsCollapsed = computed(() => store.state.prompts.options.promptsCollapsed)
+const toggleCollapse = function () {
+    store.dispatch('prompts/updatePromptsCollapsed')
+}
+const getCollapseLabel = computed(() => {
+    if (promptsCollapsed.value) {
+        return 'Развернуть все'
+    }
+    return 'Свернуть все'
+})
+
 </script>
 
 <style scoped>
-.min-width-5 {
-    min-width: 5rem;
+.border {
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
 }
 </style>
