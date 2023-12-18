@@ -73,4 +73,8 @@ class ServicePrompt extends ServiceAbstract
 
         return array_values($nonInstalledTemplates);
     }
+    public function setCodeForPrompt(): string
+    {
+        return 'rest_sw_' . $this->dtoPortal->id . '_' . (int)microtime(true);
+    }
 }

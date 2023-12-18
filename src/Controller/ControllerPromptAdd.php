@@ -22,7 +22,7 @@ class ControllerPromptAdd extends ControllerAbstract
         $dtoPrompt = $this->aggregatorPrompt->make(
             null,
             $this->getRequestValue($request, 'categories'),
-            $this->getRequestValue($request, 'code'),
+            $this->servicePrompt->setCodeForPrompt(),
             $this->getRequestValue($request, 'icon'),
             $this->getRequestValue($request, 'prompt'),
             $this->getRequestValue($request, 'ru_name'),
