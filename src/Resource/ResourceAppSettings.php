@@ -12,7 +12,7 @@ class ResourceAppSettings
             'domain' => $dtoAppSettings->domain,
             'module_code' => $dtoAppSettings->moduleCode,
             'user_id' => $dtoAppSettings->userId,
-            'is_admin' => $dtoAppSettings->isAdmin,
+            'user_permission_group' => $dtoAppSettings->userPermission,
         ];
     }
 }

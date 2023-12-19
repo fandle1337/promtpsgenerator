@@ -8,8 +8,7 @@ class DtoAppSettings extends DtoAbstract
         public ?string $domain = null,
         public ?string $moduleCode = null,
         public ?int    $userId = null,
-        public ?bool   $isAdmin = null,
-//        public ?bool   $isAvailable = null,
+        public ?string   $userPermission = null,
     )
     {
         parent::__construct();

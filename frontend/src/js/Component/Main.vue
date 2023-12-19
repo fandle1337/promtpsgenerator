@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div class="content">
+    <div>
         <div class="row mt-3">
             <div class="col-3 col-md-3 col-xl-3 mt-1 pr-2">
                 <Filter/>
@@ -45,7 +45,7 @@ const router = useRouter()
 const isLoading = computed(() => store.state.prompts.isLoading)
 
 const addPrompt = function () {
-    router.push('/b24/new-prompt/')
+    router.push({name: 'new-prompt'})
 }
 
 </script>

@@ -4,12 +4,14 @@ namespace App\Aggregator;
 
 use App\Dto\DtoAppSettings;
 use App\Repository\Rest\RepositoryUser;
+use App\Service\ServiceUserPermissions;
 use Sw24\Bitrix24Auth\Bitrix24Client;
 
 class AggregatorAppSettings
 {
     public function __construct(
         protected RepositoryUser $repositoryUser,
+        protected ServiceUserPermissions $serviceUserPermissions,
     )
     {
     }
@@ -23,8 +25,7 @@ class AggregatorAppSettings
             $domain,
             $_ENV['MODULE_CODE'],
             $this->repositoryUser->getCurrentUserId(),
-            $this->repositoryUser->isAdmin(),
-//            $this->repositoryUser->isAvailable(),
+            $this->serviceUserPermissions->get(),
         );
     }
 }

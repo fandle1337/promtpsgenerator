@@ -18,9 +18,9 @@ final class PortalPromptsCreateTable extends AbstractMigration
             ->addColumn('code', Column::STRING, ['limit' => 255])
             ->addColumn('icon', Column::STRING, ['limit' => 255])
             ->addColumn('section', Column::STRING, ['limit' => 255])
-            ->addColumn('prompt', Column::STRING)
+            ->addColumn('prompt', Column::TEXT)
             ->addColumn('parent_code', Column::STRING, ['limit' => 255, 'null' => true, 'default' => null])
-            ->addColumn('sort', Column::INTEGER, ['limit' => 255, 'null' => true, 'default' => null])
+            ->addColumn('sort', Column::BIGINTEGER, ['limit' => 255, 'null' => true, 'default' => null])
             ->addColumn('date_created', Column::TIMESTAMP, ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }

@@ -118,52 +118,59 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col-6 d-flex flex-column">
-                <label for="parentCode" class="mb-1">
-                    Параметр parent_code
-                    <i class="pi pi-question-circle ml-2"
-                       v-tooltip="'Введите код родительской секции, к которой вы ходите привязать данный промпт. Необязательный параметр.'"></i>
-                </label>
-                <InputText
-                    class="w-100"
-                    id="parentCode"
-                    type="text"
-                    :modelValue="parentCode"
-                    @update:modelValue="changeParentCode"
-                />
-            </div>
-            <div class="col-6 d-flex flex-column">
-                <label for="sorting" class="mb-1">
-                    Параметр sort
-                    <i class="pi pi-question-circle ml-2"
-                       v-tooltip="'Введите число для сортировки пунктов между собой. Необязательный параметр.'"></i>
-                </label>
-                <InputNumber
-                    class="w-100"
-                    id="sorting"
-                    :modelValue="sorting"
-                    @update:modelValue="changeSorting"
-                />
-            </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-6 d-flex flex-column">
-                <label for="section" class="mb-1">
-                    Параметр section
-                    <i class="pi pi-question-circle ml-2"
-                       v-tooltip="'Выберите секцию, в которой хотите разместить ваш промпт. Необязательный параметр.'"></i>
-                </label>
-                <Dropdown
-                    class="w-100"
-                    id="section"
-                    :options="sectionList"
-                    option-label="name"
-                    :model-value="section"
-                    @update:modelValue="changeSection"
-                />
-            </div>
-        </div>
+        <Inplace class="mt-3">
+            <template #display>
+                Посмотреть необязательные параметры
+            </template>
+            <template #content>
+                <div class="row mt-4">
+                    <div class="col-6 d-flex flex-column">
+                        <label for="parentCode" class="mb-1">
+                            Параметр parent_code
+                            <i class="pi pi-question-circle ml-2"
+                               v-tooltip="'Введите код родительской секции, к которой вы ходите привязать данный промпт. Необязательный параметр.'"></i>
+                        </label>
+                        <InputText
+                            class="w-100"
+                            id="parentCode"
+                            type="text"
+                            :modelValue="parentCode"
+                            @update:modelValue="changeParentCode"
+                        />
+                    </div>
+                    <div class="col-6 d-flex flex-column">
+                        <label for="sorting" class="mb-1">
+                            Параметр sort
+                            <i class="pi pi-question-circle ml-2"
+                               v-tooltip="'Введите число для сортировки пунктов между собой. Необязательный параметр.'"></i>
+                        </label>
+                        <InputNumber
+                            class="w-100"
+                            id="sorting"
+                            :modelValue="sorting"
+                            @update:modelValue="changeSorting"
+                        />
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-6 d-flex flex-column">
+                        <label for="section" class="mb-1">
+                            Параметр section
+                            <i class="pi pi-question-circle ml-2"
+                               v-tooltip="'Выберите секцию, в которой хотите разместить ваш промпт. Необязательный параметр.'"></i>
+                        </label>
+                        <Dropdown
+                            class="w-100"
+                            id="section"
+                            :options="sectionList"
+                            option-label="name"
+                            :model-value="section"
+                            @update:modelValue="changeSection"
+                        />
+                    </div>
+                </div>
+            </template>
+        </Inplace>
         <div class="row mt-4">
             <div class="col-6 d-flex flex-row-reverse">
                 <Button
@@ -186,6 +193,7 @@
 </template>
 
 <script setup>
+import Inplace from "primevue/inplace"
 import MultiSelect from "primevue/multiselect"
 import ScrollPanel from "primevue/scrollpanel";
 import Tag from 'primevue/tag'
@@ -355,7 +363,7 @@ const submit = async function () {
             sort: sorting.value,
             section: section.value?.code
         }).then(() => {
-            router.push('/b24/').then(() => {
+            router.push({name: 'main'}).then(() => {
                 toast.add({
                     severity: 'success',
                     summary: 'Ваш промпт добавлен!',
@@ -387,7 +395,7 @@ const confirmCancel = function (event) {
         message: 'Вы уверены, что хотите отменить? Введенные данные не сохранятся.',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-            router.push('/b24/')
+            router.push({name: 'main'})
         },
         reject: () => {
         },

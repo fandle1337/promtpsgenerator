@@ -76,7 +76,7 @@ const copyTemplate = async function (templateId) {
 }
 const addBasedOn = function (prompt) {
     router.push({
-        path: '/b24/new-prompt/',
+        name: 'new-prompt',
         query: {
             ruName: prompt.translate.ru,
             enName: prompt.translate.en,

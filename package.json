@@ -6,23 +6,23 @@
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
-    "css-loader": "^6.7.2",
-    "mini-css-extract-plugin": "^2.6.1",
-    "webpack": "^5.74.0",
+    "css-loader": "^6.8.1",
+    "mini-css-extract-plugin": "^2.7.6",
+    "webpack": "^5.89.0",
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.45",
     "bootstrap-4-grid": "^3.4.0",
-    "canvas-confetti": "^1.6.0",
+    "canvas-confetti": "^1.9.2",
     "dotenv-webpack": "^8.0.1",
     "primeicons": "^6.0.1",
-    "primevue": "^3.42.0",
-    "skyweb24.vue-adv": "^1.0.4",
-    "skyweb24.vue-review": "^1.0.4",
+    "primevue": "^3.44.0",
+    "skyweb24.vue-adv": "^1.1.1",
+    "skyweb24.vue-review": "^1.1.0",
     "vue": "^3.2.36",
-    "vue-loader": "^17.0.0",
+    "vue-loader": "^17.3.1",
     "vue-router": "^4.2.5",
-    "vuex": "^4.0.2"
+    "vuex": "^4.1.0"
   }
 }

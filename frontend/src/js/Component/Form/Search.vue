@@ -11,22 +11,20 @@
         <div class="d-flex justify-content-center align-content-center align-items-center pr-3">
             <div>
                 <Button
+                    text raised
                     class="mr-5"
                     :label="getCollapseLabel"
                     @click="toggleCollapse"
                 />
             </div>
             <div class="border d-flex justify-content-center align-content-center align-items-center">
-                <div>
-                    Мои промпты
-                </div>
                 <InputSwitch
                     class="ml-3 mr-3"
                     :modelValue="displayTemplates"
                     @update:modelValue="changeTemplates"
                 />
-                <div>
-                    Все промпты
+                <div class="pr-2">
+                    Показывать шаблоны от Скайвеб24
                 </div>
             </div>
         </div>
@@ -67,6 +65,6 @@ const getCollapseLabel = computed(() => {
 .border {
     padding: 8px;
     border: 1px solid #d1d5db;
-    border-radius: 6px;
+    border-radius: 23px;
 }
 </style>
