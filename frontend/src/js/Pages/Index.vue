@@ -59,8 +59,7 @@ store.dispatch('prompts/updateFilter').then(() => {
     max-width: 300px;
 }
 .p-inplace-display {
-    color: #0077cc;
-    text-decoration: underline;
+    border: 1px dashed #d1d5db;
     cursor: pointer;
 }
 </style>

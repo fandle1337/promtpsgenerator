@@ -27,8 +27,8 @@ export default class {
                 name: "Язык портала (не пользователя!). Например, русский, english, español – именно на эти значения будет заменяться маркер.",
                 btn: "warning"
             },
-            {code: "author.name", name: "Имя автора поста", btn: "help"},
-            {code: "author.work_position", name: "Должность автора поста", btn: "help"},
+            {code: "author.name", name: "Имя автора поста.", btn: "help"},
+            {code: "author.work_position", name: "Должность автора поста.", btn: "help"},
         ]
     }
 

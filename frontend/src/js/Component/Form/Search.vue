@@ -24,7 +24,7 @@
                     @update:modelValue="changeTemplates"
                 />
                 <div class="pr-2">
-                    Показывать шаблоны от Скайвеб24
+                    Показывать шаблоны от Skyweb24
                 </div>
             </div>
         </div>

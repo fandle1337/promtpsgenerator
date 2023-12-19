@@ -1,8 +1,11 @@
 <template>
     <Preloader :isLoading="isLoading"/>
     <div class="container">
-        <div>
-            <h2>Создание нового промпта</h2>
+        <div class="d-flex">
+            <h2 class="mr-auto">Создание нового промпта</h2>
+            <a class="d-flex align-content-center justify-content-center align-items-center"
+               target="_blank"
+               href="https://skyweb24.ru/documentation/copilotprompts/chapter0689/">Документация</a>
         </div>
         <div class="row mt-4">
             <div class="col-6 d-flex flex-column">
@@ -119,7 +122,7 @@
                 </div>
             </div>
         </div>
-        <Inplace class="mt-3">
+        <Inplace class="mt-4">
             <template #display>
                 Посмотреть необязательные параметры
             </template>
