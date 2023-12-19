@@ -26,6 +26,7 @@ class ResourcePrompt
                 'sort' => $dto->sort,
                 'icon' => $dto->icon,
                 'dateCreated' => $dto->dateCreated,
+                'section' => $dto->section,
             ];
             if ($dto->isTemplate) {
                 $item['isTemplate'] = true;
