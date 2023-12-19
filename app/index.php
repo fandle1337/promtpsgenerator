@@ -31,7 +31,7 @@ require_once dirname(__DIR__) . "/config/bootstrap.php";
     const AUTH_OBJECT = <?=(new \Sw24\Bitrix24Auth\Bitrix24Client())->getAuthObject();?>;
     const PLACEMENT_OPTIONS = <?=$_REQUEST['PLACEMENT_OPTIONS'] ?? '{}';?>;
 
-    const domainName = AUTH_OBJECT.DOMAIN
+    const domainName = 'skyweb24.ru'
 
     const linkTag = document.createElement('link')
     linkTag.rel = 'stylesheet'
