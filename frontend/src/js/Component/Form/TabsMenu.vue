@@ -11,9 +11,9 @@
             </template>
         </div>
         <div class="content p-2">
-
+            <div class="container-fluid mt-2">
                 <slot/>
-
+            </div>
         </div>
     </div>
     <Adv/>

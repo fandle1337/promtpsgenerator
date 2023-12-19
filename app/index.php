@@ -23,7 +23,7 @@ require_once dirname(__DIR__) . "/config/bootstrap.php";
 <body>
 
 
-<div class="container-fluid">
+<div>
     <div id="app"></div>
 </div>
 

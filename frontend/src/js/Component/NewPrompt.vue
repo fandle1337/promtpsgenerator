@@ -1,7 +1,7 @@
 <template>
     <Preloader :isLoading="isLoading"/>
     <div class="container">
-        <div class="mt-2">
+        <div>
             <h1>Создание нового промпта</h1>
         </div>
         <div class="row mt-4">
@@ -50,7 +50,7 @@
                 <Textarea
                     class="w-100"
                     id="prompt"
-                    rows="15"
+                    rows="7"
                     :model-value="prompt"
                     @update:modelValue="changePrompt"
                     :class="{'p-invalid': !fieldValid.prompt.value && formSubmitted}"
@@ -62,8 +62,7 @@
                     <i class="pi pi-question-circle ml-1"
                        v-tooltip.right="'Вы можете использовать это'"></i>
                 </label>
-
-                <ScrollPanel style="width: 100%; height: 326px">
+                <ScrollPanel style="width: 100%; height: 166px">
                     <div v-for="marker in markerList">
                         <Button
                             :severity="marker.btn"

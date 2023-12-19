@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-center align-content-center align-items-center pr-3">
             <div>
                 <Button
-                    text raised
+                    outlined
                     class="mr-5"
                     :label="getCollapseLabel"
                     @click="toggleCollapse"

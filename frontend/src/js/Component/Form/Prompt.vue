@@ -18,7 +18,7 @@
                 <div v-tooltip.left="'Код промпта'">
                     {{ prompt.code }}
                 </div>
-                <div v-tooltip.right="'Дата установки'">
+                <div v-tooltip.left="'Дата установки'">
                     {{formatDate(prompt.dateCreated)}}
                 </div>
             </div>

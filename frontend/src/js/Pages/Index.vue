@@ -52,4 +52,15 @@ store.dispatch('prompts/updateFilter').then(() => {
 .p-inputswitch {
     margin-left: unset !important;
 }
+.p-button.p-button-outlined {
+    border-color: #d1d5db !important;
+}
+.p-confirm-popup {
+    max-width: 300px;
+}
+.p-inplace-display {
+    color: #0077cc;
+    text-decoration: underline;
+    cursor: pointer;
+}
 </style>

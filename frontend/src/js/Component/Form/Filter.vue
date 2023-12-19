@@ -29,7 +29,7 @@
         <template #footer>
             <div class="mb-3 d-flex justify-content-center">
                 <Button
-                    text raised
+                    outlined
                     label="Показать все"
                     @click="clearFilter"
                 />

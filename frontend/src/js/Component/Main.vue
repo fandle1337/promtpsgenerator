@@ -1,7 +1,7 @@
 <template>
     <Toast/>
     <Preloader :isLoading="isLoading"/>
-    <div class="mt-3 row d-flex align-items-center">
+    <div class="row d-flex align-items-center">
         <div class="col-2 col-md-3 col-xl-3">
             <Button
                 severity="success"
