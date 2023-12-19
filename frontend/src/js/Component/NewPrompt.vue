@@ -189,7 +189,7 @@
                 <Toast/>
                 <ConfirmPopup/>
                 <Button
-                    severity="danger"
+                    severity="secondary"
                     class="mr-4"
                     label="Отменить"
                     @click="confirmCancel($event)"
