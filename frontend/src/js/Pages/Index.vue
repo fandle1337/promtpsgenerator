@@ -53,6 +53,7 @@ store.dispatch('prompts/updateFilter').then(() => {
     margin-left: unset !important;
 }
 .p-button.p-button-outlined {
+    border-radius: 23px;
     border-color: #d1d5db !important;
 }
 .p-confirm-popup {

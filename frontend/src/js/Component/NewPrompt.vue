@@ -117,8 +117,11 @@
                         <i class="pi pi-download ml-2" style="font-size: 1.5rem"
                            v-tooltip="'Ссылка на pdf-файл'"></i>
                     </a>
-                    <div v-if="icon" :class="'ui-icon-set --' + icon"
-                         style="--ui-icon-set__icon-size: 24px;"></div>
+<!--                    <div v-if="icon">
+                        <img :src="'https://skyweb24.ru/bitrix/js/ui/icon-set/main/images/' + icon +'.svg'"
+                             alt=""
+                             style="width: 50px; height: 50px;">
+                    </div>-->
                 </div>
             </div>
         </div>

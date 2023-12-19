@@ -30,13 +30,6 @@ require_once dirname(__DIR__) . "/config/bootstrap.php";
 <script>
     const AUTH_OBJECT = <?=(new \Sw24\Bitrix24Auth\Bitrix24Client())->getAuthObject();?>;
     const PLACEMENT_OPTIONS = <?=$_REQUEST['PLACEMENT_OPTIONS'] ?? '{}';?>;
-
-    const domainName = 'skyweb24.ru'
-
-    const linkTag = document.createElement('link')
-    linkTag.rel = 'stylesheet'
-    linkTag.href = `https://${domainName}/bitrix/js/ui/icon-set/main/style.min.css`
-    document.head.appendChild(linkTag)
 </script>
 <script src="<?=$_ENV['WORK_DIRECTORY']?>/app/dist/content.bundle.js"></script>
 

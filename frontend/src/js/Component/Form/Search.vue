@@ -18,13 +18,16 @@
                 />
             </div>
             <div class="border d-flex justify-content-center align-content-center align-items-center">
+                <div class="pl-2 mr-3">
+                    Мои промпты
+                </div>
                 <InputSwitch
-                    class="ml-3 mr-3"
+                    class="mr-3"
                     :modelValue="displayTemplates"
                     @update:modelValue="changeTemplates"
                 />
                 <div class="pr-2">
-                    Показывать шаблоны от Skyweb24
+                    Библиотека промптов
                 </div>
             </div>
         </div>

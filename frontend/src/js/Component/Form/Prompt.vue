@@ -82,10 +82,10 @@ const addBasedOn = function (prompt) {
             enName: prompt.translate.en,
             prompt: prompt.prompt,
             categories: prompt.categories,
-            code: prompt.code,
-            parentCode: prompt.parentCode,
-            sort: prompt.sort,
             icon: prompt.icon,
+            parentCode: prompt.parentCode,
+            section: prompt.section,
+            sort: prompt.sort,
         }
     })
 }
