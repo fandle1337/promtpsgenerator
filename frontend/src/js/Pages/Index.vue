@@ -38,4 +38,8 @@ store.dispatch('prompts/updateFilter').then(() => {
     max-width: 320px;
     width: auto;
 }
+.p-listbox-item {
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
 </style>

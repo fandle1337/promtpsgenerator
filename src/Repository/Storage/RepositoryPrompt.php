@@ -31,6 +31,8 @@ class RepositoryPrompt
                 $row->parent_code,
                 $row->sort,
                 $row->date_created,
+                null,
+                $row->section,
             );
         }
 

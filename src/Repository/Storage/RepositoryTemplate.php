@@ -36,6 +36,7 @@ class RepositoryTemplate
                 $row->sort,
                 $row->date_created,
                 true,
+                $row->section,
             );
         }
         return $result ?? [];
@@ -58,6 +59,7 @@ class RepositoryTemplate
             $result->sort,
             null,
             true,
+            $result->section,
         );
     }
 }
