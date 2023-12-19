@@ -285,10 +285,14 @@ const chooseMarker = function (event) {
 }
 
 const sectionList = computed(() => OptionList.getSectionList())
-const section = ref()
+const getSectionByCode = function (code) {
+    return sectionList.value.find(section => section.code === code)
+}
+const section = ref(getSectionByCode(receivedPrompt.section))
 const changeSection = function (event) {
     section.value = event
 }
+
 
 const fieldValid = {
     nameRu: ref(false),
