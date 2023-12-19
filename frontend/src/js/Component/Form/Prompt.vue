@@ -33,7 +33,7 @@
             </button>
             <Menu ref="menuVisible" id="config_menu" :model="itemsMenu" popup/>
         </template>
-        <div v-tooltip.left="'Текст промпта'">
+        <div v-tooltip.left="'Текст промпта'" style="white-space: pre-line">
             {{ prompt.prompt }}
         </div>
     </Panel>

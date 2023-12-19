@@ -2,7 +2,7 @@
     <Preloader :isLoading="isLoading"/>
     <div class="container">
         <div>
-            <h1>Создание нового промпта</h1>
+            <h2>Создание нового промпта</h2>
         </div>
         <div class="row mt-4">
             <div class="col-6 d-flex flex-column">
@@ -107,13 +107,15 @@
                         type="text"
                         :modelValue="icon"
                         @update:modelValue="changeIcon"
-                        :class="{'p-invalid': !fieldValid.icon.value && formSubmitted, 'w-100': true}"
+                        :class="{'p-invalid': !fieldValid.icon.value && formSubmitted, 'w-50': true}"
                     />
-                    <a class="mt-2" href="https://dev.1c-bitrix.ru/upload/api_help/rest/copilot_icon_set.pdf"
+                    <a class="mt-2 mr-5" href="https://dev.1c-bitrix.ru/upload/api_help/rest/copilot_icon_set.pdf"
                        target="_blank">
                         <i class="pi pi-download ml-2" style="font-size: 1.5rem"
                            v-tooltip="'Ссылка на pdf-файл'"></i>
                     </a>
+                    <div v-if="icon" :class="'ui-icon-set --' + icon"
+                         style="--ui-icon-set__icon-size: 24px;"></div>
                 </div>
             </div>
         </div>
@@ -138,21 +140,6 @@
                         />
                     </div>
                     <div class="col-6 d-flex flex-column">
-                        <label for="sorting" class="mb-1">
-                            Параметр sort
-                            <i class="pi pi-question-circle ml-2"
-                               v-tooltip="'Введите число для сортировки пунктов между собой. Необязательный параметр.'"></i>
-                        </label>
-                        <InputNumber
-                            class="w-100"
-                            id="sorting"
-                            :modelValue="sorting"
-                            @update:modelValue="changeSorting"
-                        />
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-6 d-flex flex-column">
                         <label for="section" class="mb-1">
                             Параметр section
                             <i class="pi pi-question-circle ml-2"
@@ -165,6 +152,21 @@
                             option-label="name"
                             :model-value="section"
                             @update:modelValue="changeSection"
+                        />
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-6 d-flex flex-column">
+                        <label for="sorting" class="mb-1">
+                            Параметр sort
+                            <i class="pi pi-question-circle ml-2"
+                               v-tooltip="'Введите число для сортировки пунктов между собой. Необязательный параметр.'"></i>
+                        </label>
+                        <InputNumber
+                            class="w-100"
+                            id="sorting"
+                            :modelValue="sorting"
+                            @update:modelValue="changeSorting"
                         />
                     </div>
                 </div>
