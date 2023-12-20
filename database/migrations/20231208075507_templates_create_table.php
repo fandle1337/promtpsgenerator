@@ -18,7 +18,7 @@ final class TemplatesCreateTable extends AbstractMigration
             ->addColumn('icon', Column::STRING, ['limit' => 255])
             ->addColumn('prompt', Column::TEXT)
             ->addColumn('parent_code', Column::STRING, ['limit' => 255])
-            ->addColumn('sort', Column::BIGINTEGER, ['limit' => 255])
+            ->addColumn('sort', Column::INTEGER)
             ->addColumn('section', Column::STRING, ['limit' => 255])
             ->create();
     }

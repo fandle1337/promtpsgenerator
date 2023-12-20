@@ -11,7 +11,7 @@ final class PortalPromptsCreateTable extends AbstractMigration
     {
         $table = $this->table('portal_prompts');
         $table
-            ->addColumn('portal_id', Column::INTEGER, ['limit' => 255])
+            ->addColumn('portal_id', Column::INTEGER)
             ->addColumn('ru_name', Column::STRING, ['limit' => 255])
             ->addColumn('en_name', Column::STRING, ['limit' => 255])
             ->addColumn('categories', Column::STRING, ['limit' => 255])
@@ -20,7 +20,7 @@ final class PortalPromptsCreateTable extends AbstractMigration
             ->addColumn('section', Column::STRING, ['limit' => 255])
             ->addColumn('prompt', Column::TEXT)
             ->addColumn('parent_code', Column::STRING, ['limit' => 255, 'null' => true, 'default' => null])
-            ->addColumn('sort', Column::BIGINTEGER, ['limit' => 255, 'null' => true, 'default' => null])
+            ->addColumn('sort', Column::INTEGER, ['null' => true, 'default' => null])
             ->addColumn('date_created', Column::TIMESTAMP, ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }
