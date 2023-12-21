@@ -19,7 +19,7 @@
             </template>
         </Card>
     </div>
-    <ScrollPanel class="pr-3" v-if="promptList.length !== 0" style="width: 100%; height: 488px">
+    <ScrollPanel class="pr-3" v-if="promptList.length !== 0" style="width: 100%; height: 100vh">
         <div v-for="(prompt, index) in promptList" :key="index">
             <div :class="{ 'border': true, 'mb-3': index < promptList.length - 1 }">
                 <Prompt :prompt="prompt"/>
