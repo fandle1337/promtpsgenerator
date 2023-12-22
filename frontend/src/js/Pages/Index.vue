@@ -17,7 +17,6 @@ import {computed} from "vue";
 import {useStore} from "vuex";
 import {Popup} from "skyweb24.vue-review";
 import {useRoute} from "vue-router";
-import ParseIconName from "../class/ParseIconName";
 
 const route = useRoute()
 const store = useStore()
