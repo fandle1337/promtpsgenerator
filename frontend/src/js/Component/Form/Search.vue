@@ -49,8 +49,9 @@ const changeTemplates = function (event) {
     store.state.prompts.isLoading = true
     store.dispatch('prompts/updatePromptList').then(() => {
         store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+    }).then(() => {
+        store.state.prompts.isLoading = false
     })
-    store.state.prompts.isLoading = false
 }
 
 const promptsCollapsed = computed(() => store.state.prompts.options.promptsCollapsed)

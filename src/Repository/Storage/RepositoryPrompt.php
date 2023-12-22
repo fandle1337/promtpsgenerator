@@ -18,13 +18,7 @@ class RepositoryPrompt
             });
         }
 
-        $prompts = $query->get();
-
-        if ($prompts->isEmpty()) {
-            return [];
-        }
-
-        foreach ($prompts as $prompt) {
+        foreach ($query->get() as $prompt) {
 
             $categories = $prompt->categories->pluck('code')->toArray();
 

@@ -69,12 +69,8 @@ const isAdmin = computed(() => {
     return store.state.settings.userPermissionGroup === 'A'
 })
 
-const expandCategory = function (category) {
-    return expand(category)
-}
-
 const expandedCategories = computed(() => {
-    return props.prompt.categories.map(category => expandCategory(category))
+    return props.prompt.categories.map(category => expand(category))
 })
 
 const deletePrompt = async function (promptId) {
@@ -86,7 +82,7 @@ const deletePrompt = async function (promptId) {
             life: 3000,
             closable: false,
         })
-        return false
+        return
     }
     if (confirm('Вы уверены, что хотите удалить этот промпт?')) {
         store.state.prompts.isLoading = true
@@ -105,7 +101,7 @@ const copyTemplate = async function (templateId) {
             life: 3000,
             closable: false,
         })
-        return false
+        return
     }
     store.state.prompts.isLoading = true
     await store.dispatch('prompts/copyTemplate', {id: templateId})
@@ -122,7 +118,7 @@ const addBasedOn = function (prompt) {
             life: 3000,
             closable: false,
         })
-        return false
+        return
     }
     router.push({
         name: 'new-prompt',

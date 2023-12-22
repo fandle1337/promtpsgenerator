@@ -16,13 +16,10 @@
             </div>
         </div>
     </div>
-    <Adv/>
 </template>
 <script setup>
-import TabMenu from 'primevue/tabmenu'
 import {ref} from "vue"
 import {useRoute, useRouter} from "vue-router";
-import {Adv} from "skyweb24.vue-adv"
 
 const route = useRoute()
 const router = useRouter()

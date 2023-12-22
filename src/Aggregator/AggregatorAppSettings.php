@@ -25,8 +25,7 @@ class AggregatorAppSettings
             $domain,
             $_ENV['MODULE_CODE'],
             $this->repositoryUser->getCurrentUserId(),
-'A'
-//            $this->serviceUserPermissions->get(),
+            $this->serviceUserPermissions->get(),
         );
     }
 }

@@ -22,13 +22,7 @@ class RepositoryTemplate
             });
         }
 
-        $templates = $query->get();
-
-        if ($templates->isEmpty()) {
-            return [];
-        }
-
-        foreach ($templates as $template) {
+        foreach ($query->get() as $template) {
 
             $categories = $template->categories->pluck('code')->toArray();
 
