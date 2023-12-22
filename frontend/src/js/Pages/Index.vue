@@ -28,9 +28,6 @@ const layout = computed(() => route.meta.layout)
 
 store.state.prompts.isLoading = true
 
-const css = (new ParseIconName).getContentFromCss()
-console.log(css);
-
 store.dispatch('prompts/updateFilter')
     .then(() => {
         const payload = {
