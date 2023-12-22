@@ -30,7 +30,7 @@ class ServicePrompt extends ServiceAbstract
     {
         $dtoPrompt->portalId = $this->dtoPortal->id;
 
-        if (!$this->repositoryPrompt->isUniqueCodeByPortalId($this->dtoPortal->id, $dtoPrompt->code)) {
+        if ($this->repositoryPrompt->isHasByPortalId($this->dtoPortal->id, $dtoPrompt->code)) {
             throw new ExceptionPrompt('Промпт с таким кодом уже зарегистрирован на портале.');
         }
 
@@ -52,14 +52,13 @@ class ServicePrompt extends ServiceAbstract
 
     public function list(DtoFilter $dtoFilter): array
     {
-
         if ($dtoFilter->showTemplates) {
             $templateList = $this->repositoryTemplate->getAll($dtoFilter);
-            $promptList = $this->repositoryPrompt->getByPortalId($dtoFilter, $this->dtoPortal->id);
+            $promptList = $this->repositoryPrompt->getAllByPortalId($dtoFilter, $this->dtoPortal->id);
 
             return array_merge($promptList, $this->getNonInstallTemplateList($templateList, $promptList));
         }
-        return $this->repositoryPrompt->getByPortalId($dtoFilter, $this->dtoPortal->id);
+        return $this->repositoryPrompt->getAllByPortalId($dtoFilter, $this->dtoPortal->id);
     }
 
     /**
@@ -81,7 +80,7 @@ class ServicePrompt extends ServiceAbstract
         return array_values($nonInstalledTemplates);
     }
 
-    public function setCodeForPrompt(): string
+    public function generateCodeForPrompt(): string
     {
         return 'rest_sw_' . $this->dtoPortal->id . '_' . (int)microtime(true);
     }

@@ -24,6 +24,6 @@ class ControllerUninstall extends ControllerAbstract
         $this->repositoryPortal->uninstallByDomain($dtoPortal->domain);
         $this->repositoryPrompt->deleteAllByPortalId($dtoPortal->id);
         
-        return Response::toArray('Uninstall is successfully done!');
+        return Response::toArray(true);
     }
 }

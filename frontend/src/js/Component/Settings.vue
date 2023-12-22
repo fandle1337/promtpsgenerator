@@ -2,8 +2,8 @@
     <Preloader :isLoading="isLoading"/>
     Раздел находится в процессе разработки.
     <Banner
-        :module-code="appSettings.moduleCode"
-        :domain="appSettings.domain"
+        :module-code="moduleCode"
+        :domain="domain"
     />
 </template>
 
@@ -16,7 +16,8 @@ import {computed} from "vue"
 
 const store = useStore()
 const isLoading = computed(() => store.state.prompts.isLoading)
-const appSettings = computed(() => store.state.settings.appSettings)
+const moduleCode = computed(() => store.state.settings.moduleCode)
+const domain = computed(() => store.state.settings.domain)
 </script>
 
 <style scoped>

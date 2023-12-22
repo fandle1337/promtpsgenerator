@@ -3,9 +3,9 @@
         <router-view/>
     </component>
     <Popup
-        :module-code="appSettings.moduleCode"
-        :domain="appSettings.domain"
-        :user-id="+appSettings.userId"
+        :module-code="moduleCode"
+        :domain="domain"
+        :user-id="userId"
     />
     <Adv/>
 </template>
@@ -17,25 +17,34 @@ import {computed} from "vue";
 import {useStore} from "vuex";
 import {Popup} from "skyweb24.vue-review";
 import {useRoute} from "vue-router";
+import ParseIconName from "../class/ParseIconName";
 
 const route = useRoute()
 const store = useStore()
-const appSettings = computed(() => store.state.settings.appSettings)
+const moduleCode = computed(() => store.state.settings.moduleCode)
+const domain = computed(() => store.state.settings.domain)
+const userId = computed(() => store.state.settings.userId)
 const layout = computed(() => route.meta.layout)
 
 store.state.prompts.isLoading = true
 
-store.dispatch('prompts/updateFilter').then(() => {
-    const payload = {
-        showTemplates: store.state.prompts.filter.showTemplates,
-        category: store.state.prompts.filter.placement
-    }
-    store.dispatch('prompts/updatePromptList', payload).then(() => {
-        store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+const css = (new ParseIconName).getContentFromCss()
+console.log(css);
+
+store.dispatch('prompts/updateFilter')
+    .then(() => {
+        const payload = {
+            showTemplates: store.state.prompts.filter.showTemplates,
+            category: store.state.prompts.filter.placement
+        }
+        store.dispatch('prompts/updatePromptList', payload)
+            .then(() => {
+                store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+            }).then(() => {
+            store.state.prompts.isLoading = false
+        })
     })
 
-    store.dispatch('prompts/addIconToPlacement')
-})
 </script>
 
 <style>
@@ -49,16 +58,20 @@ store.dispatch('prompts/updateFilter').then(() => {
     padding-bottom: 3px;
     padding-top: 3px;
 }
+
 .p-inputswitch {
     margin-left: unset !important;
 }
+
 .p-button.p-button-outlined {
     border-radius: 23px;
     border-color: #d1d5db !important;
 }
+
 .p-confirm-popup {
     max-width: 300px;
 }
+
 .p-inplace-display {
     border: 1px dashed #d1d5db;
     cursor: pointer;

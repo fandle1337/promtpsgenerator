@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
+use App\Repository\Rest\RepositoryFilter;
 use App\Resource\ResourceFilter;
 use App\Response\Response;
-use App\Service\ServiceFilter;
 
 class ControllerFilterGet extends ControllerAbstract
 {
     public function __construct(
-        protected ServiceFilter $serviceFilter,
+        protected RepositoryFilter $repositoryFilter,
     )
     {
     }
@@ -18,7 +18,7 @@ class ControllerFilterGet extends ControllerAbstract
     {
         return Response::toArray(
             ResourceFilter::toArray(
-                $this->serviceFilter->get()
+                $this->repositoryFilter->get()
             )
         );
     }

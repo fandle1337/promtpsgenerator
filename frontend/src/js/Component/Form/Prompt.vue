@@ -1,14 +1,15 @@
 <template>
+    <Toast/>
     <Panel toggleable :collapsed="promptsCollapsed">
         <template #header>
             <div class="d-flex align-items-center justify-content-center align-content-center">
                 <div v-tooltip.left="'Название промпта'" class="mr-2">
                     {{ prompt.translate.ru }}
                 </div>
-                <div class="d-inline-block" v-for="iconCategory in prompt.iconCategoryList">
-                    <div :class="['bg-' + iconCategory.color, 'rounded-full', 'mr-2']"
-                         v-tooltip.top="iconCategory.name">
-                        <i :class="[iconCategory.icon]" style="font-size: 1rem; color: white;"></i>
+                <div class="d-inline-block" v-for="category in expandedCategories">
+                    <div :class="['bg-' + category.color, 'rounded-full', 'mr-2']"
+                         v-tooltip.top="category.name">
+                        <i :class="[category.icon]" style="font-size: 1rem; color: white;"></i>
                     </div>
                 </div>
             </div>
@@ -40,6 +41,8 @@
 </template>
 
 <script setup>
+
+import Toast from "primevue/toast";
 import Menu from 'primevue/menu';
 import Panel from 'primevue/panel';
 import ConfirmPopup from 'primevue/confirmpopup';
@@ -47,9 +50,11 @@ import Button from "primevue/button";
 import {useStore} from "vuex";
 import {computed, ref} from "vue";
 import {useRouter} from "vue-router";
+import {useToast} from "primevue/usetoast";
+import expand from "../../class/expandedCateogryIcon";
 
 const store = useStore()
-
+const toast = useToast()
 const router = useRouter()
 
 const props = defineProps({
@@ -60,21 +65,65 @@ const props = defineProps({
 
 const promptsCollapsed = computed(() => store.state.prompts.options.promptsCollapsed)
 
+const isAdmin = computed(() => {
+    return store.state.settings.userPermissionGroup === 'A'
+})
+
+const expandCategory = function (category) {
+    return expand(category)
+}
+
+const expandedCategories = computed(() => {
+    return props.prompt.categories.map(category => expandCategory(category))
+})
+
 const deletePrompt = async function (promptId) {
+    if (!isAdmin.value) {
+        toast.add({
+            severity: 'error',
+            summary: 'Внимание!',
+            detail: 'Это действие доступно только администраторам портала.',
+            life: 3000,
+            closable: false,
+        })
+        return false
+    }
     if (confirm('Вы уверены, что хотите удалить этот промпт?')) {
         store.state.prompts.isLoading = true
         await store.dispatch('prompts/deletePrompt', {id: promptId})
         await store.dispatch('prompts/updatePromptList')
         await store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+        store.state.prompts.isLoading = false
     }
 }
 const copyTemplate = async function (templateId) {
+    if (!isAdmin.value) {
+        toast.add({
+            severity: 'error',
+            summary: 'Внимание!',
+            detail: 'Это действие доступно только администраторам портала.',
+            life: 3000,
+            closable: false,
+        })
+        return false
+    }
     store.state.prompts.isLoading = true
     await store.dispatch('prompts/copyTemplate', {id: templateId})
     await store.dispatch('prompts/updatePromptList')
     await store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+    store.state.prompts.isLoading = false
 }
 const addBasedOn = function (prompt) {
+    if (!isAdmin.value) {
+        toast.add({
+            severity: 'error',
+            summary: 'Внимание!',
+            detail: 'Это действие доступно только администраторам портала.',
+            life: 3000,
+            closable: false,
+        })
+        return false
+    }
     router.push({
         name: 'new-prompt',
         query: {

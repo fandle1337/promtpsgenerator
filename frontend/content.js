@@ -11,7 +11,7 @@ import LinkSliderManager from "./src/js/class/LinkSliderManager";
 import "primevue/resources/themes/lara-light-indigo/theme.css";
 
 store.dispatch("settings/updateAppSettings").then(e => {
-    (new LinkSliderManager(store.state.settings.appSettings.domain)).start()
+    (new LinkSliderManager(store.state.settings.domain)).start()
     createApp(Index)
         .use(PrimeVue)
         .use(router)

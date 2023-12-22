@@ -23,7 +23,7 @@ class ServiceTemplate extends ServiceAbstract
     public function copy(int $templateId): bool
     {
         $dtoTemplate = $this->repositoryTemplate->getById($templateId);
-        if (!$this->repositoryPrompt->isUniqueCodeByPortalId($this->dtoPortal->id, $dtoTemplate->code)) {
+        if ($this->repositoryPrompt->isHasByPortalId($this->dtoPortal->id, $dtoTemplate->code)) {
             return false;
         }
 

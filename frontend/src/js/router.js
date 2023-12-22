@@ -20,7 +20,7 @@ const route = function (name, path, component, permissions, layout = TabsMenu) {
 
 const routes = [
     route("main", '/:pathMatch(.*)*', Main, ['A', 'U']),
-    route("new-prompt", '/new-prompt/', NewPrompt, ['A', 'U']),
+    route("new-prompt", '/new-prompt/', NewPrompt, ['A']),
     route("settings", '/settings/', Settings, ['A', 'U']),
 ]
 
@@ -29,16 +29,15 @@ const router = createRouter({
     routes
 })
 
-/*router.beforeEach(async (to, from, next) => {
-    const checkPermissions = () => {
-        return checkUserPermission(to.meta.permissions, store.state.settings.appSettings.user_permission_group)
-    }
+router.beforeEach((to, from, next) => {
+    const requiredPermissions = to.meta.permissions || []
+    const userPermissions = store.state.settings.userPermissionGroup || []
 
-    if (to.name !== "main" && !checkPermissions()) {
-        next({name: "main"})
-    } else {
+    if (checkUserPermission(requiredPermissions, userPermissions)) {
         next()
+    } else {
+        next({name: from.name})
     }
-})*/
+})
 
 export default router

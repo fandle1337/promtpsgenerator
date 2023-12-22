@@ -2,7 +2,7 @@
 
 namespace App\Dto;
 
-class DtoPortal extends DtoAbstract
+class DtoPortal
 {
     public function __construct(
         public ?int    $id = null,
@@ -16,6 +16,5 @@ class DtoPortal extends DtoAbstract
         public ?string $dateUninstall = null,
     )
     {
-        parent::__construct();
     }
 }

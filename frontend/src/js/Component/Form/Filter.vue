@@ -45,10 +45,22 @@ import Checkbox from "primevue/checkbox";
 import Listbox from "primevue/listbox";
 import {computed, ref} from "vue";
 import {useStore} from "vuex";
+import OptionList from "../../class/OptionList";
+import expand from "../../class/expandedCateogryIcon";
 
 const store = useStore()
+
+const expandPlacements = function (placements) {
+    return placements.map(placement => {
+        return {
+            ...placement,
+            ...expand(placement.code),
+        }
+    })
+}
+
 const placements = computed(() => {
-    return store.state.prompts.options.placements
+    return expandPlacements(store.state.prompts.options.placements)
 })
 
 const selectedPlacement = computed(() => {
@@ -57,15 +69,19 @@ const selectedPlacement = computed(() => {
 
 const choosePlacements = function (event) {
     store.state.prompts.filter.placement = event.code
+    store.state.prompts.isLoading = true
     store.dispatch('prompts/updatePromptList').then(() => {
         store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList) //TODO возможно убрать
     })
+    store.state.prompts.isLoading = false
 }
 const clearFilter = function () {
     store.state.prompts.filter.placement = null
+    store.state.prompts.isLoading = true
     store.dispatch('prompts/updatePromptList').then(() => {
         store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList) //TODO возможно убрать
     })
+    store.state.prompts.isLoading = false
 }
 </script>
 
@@ -83,6 +99,7 @@ const clearFilter = function () {
 .name {
     font-size: 15px;
 }
+
 .p-listbox.p-focus {
     outline: none;
     border-color: #d1d5db;

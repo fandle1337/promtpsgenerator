@@ -4,6 +4,7 @@
     <div class="row d-flex align-items-center">
         <div class="col-2 col-md-3 col-xl-3">
             <Button
+                :disabled="isNotAdmin"
                 severity="success"
                 icon="pi pi-plus"
                 label="Создать промпт"
@@ -42,6 +43,9 @@ import {computed} from "vue";
 const store = useStore()
 const router = useRouter()
 
+const isNotAdmin = computed(() => {
+    return store.state.settings.userPermissionGroup !== 'A'
+})
 const isLoading = computed(() => store.state.prompts.isLoading)
 
 const addPrompt = function () {

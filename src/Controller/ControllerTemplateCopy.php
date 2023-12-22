@@ -21,12 +21,12 @@ class ControllerTemplateCopy extends ControllerAbstract
 
         if (!$this->serviceTemplate->copy($templateId)) {
             return Response::toArray(
-                'this template is already installed',
-                EnumResponseStatus::STATUS_ERROR,
+                false,
                 400,
+                EnumResponseStatus::STATUS_ERROR,
             );
         }
-        return Response::toArray('template is successfully installed');
+        return Response::toArray(true);
 
     }
 }

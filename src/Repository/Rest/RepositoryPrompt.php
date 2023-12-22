@@ -44,9 +44,19 @@ class RepositoryPrompt extends RepositoryRestAbstract
 
     public function unregister(string $code): bool
     {
-        return $this->client->call(
-            'ai.prompt.unregister',
-            ['code' => $code]
-        )['result'];
+        try {
+            $response = $this->client->call(
+                'ai.prompt.unregister',
+                ['code' => $code]
+            );
+        } catch (Bitrix24Exception $e) {
+            return false;
+        }
+
+        if (!empty($response['result'])) {
+            return $response['result'];
+        }
+
+        return false;
     }
 }

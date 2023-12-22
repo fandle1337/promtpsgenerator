@@ -20,12 +20,12 @@ class ControllerPromptDelete extends ControllerAbstract
         $promptId = $this->getRequestValue($request, 'id');
 
         if ($this->servicePrompt->delete($promptId)) {
-            return Response::toArray('prompt is successfully deleted');
+            return Response::toArray(true);
         }
         return Response::toArray(
-            'deleting is failed',
+            false,
+            400,
             EnumResponseStatus::STATUS_ERROR,
-            400
         );
     }
 

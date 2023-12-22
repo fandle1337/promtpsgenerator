@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Dto\DtoFilter;
+use App\Repository\Rest\RepositoryFilter;
 use App\Resource\ResourcePrompt;
 use App\Response\Response;
-use App\Service\ServiceFilter;
 use App\Service\ServicePrompt;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -13,7 +13,7 @@ class ControllerPromptList extends ControllerAbstract
 {
     public function __construct(
         protected ServicePrompt    $servicePrompt,
-        protected ServiceFilter    $serviceFilter,
+        protected RepositoryFilter    $repositoryFilter,
     )
     {
     }
@@ -26,7 +26,7 @@ class ControllerPromptList extends ControllerAbstract
         );
 
         $promptList = $this->servicePrompt->list($dtoFilter);
-        $this->serviceFilter->set($dtoFilter);
+        $this->repositoryFilter->updateOrCreate($dtoFilter);
 
         return Response::toArray(
             ResourcePrompt::toArray(

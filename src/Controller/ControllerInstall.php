@@ -6,8 +6,11 @@ use App\Dto\DtoPortal;
 use App\Repository\Rest\RepositoryAppInfo;
 use App\Response\Response;
 use App\Service\ServicePortal;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ServerRequestInterface;
 use Sw24\Sw24RestSdk\Client;
+use Sw24\Sw24RestSdk\Exception\ExceptionNotValidateResponse;
+use Sw24\Sw24RestSdk\Exception\ExceptionRequestFailed;
 
 class ControllerInstall extends ControllerAbstract
 {
@@ -23,13 +26,17 @@ class ControllerInstall extends ControllerAbstract
     {
         $b24client = (new \Sw24\Bitrix24Auth\Bitrix24Client())->getClient();
 
-        $this->client->callInstallApplication(
-            $b24client->getDomain(),
-            $_ENV['MODULE_CODE'],
-            $b24client->getMemberId(),
-            $b24client->getAccessToken(),
-            $b24client->getRefreshToken(),
-        );
+        try {
+            $this->client->callInstallApplication(
+                $b24client->getDomain(),
+                $_ENV['MODULE_CODE'],
+                $b24client->getMemberId(),
+                $b24client->getAccessToken(),
+                $b24client->getRefreshToken(),
+            );
+        } catch (ExceptionNotValidateResponse | GuzzleException | ExceptionRequestFailed $e) {
+            return Response::toArray(false);
+        }
 
         $dtoPortal = new DtoPortal(
             null,
@@ -63,6 +70,6 @@ class ControllerInstall extends ControllerAbstract
             'HANDLER' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . DIR_API . '/uninstall/',
         ]);
 
-        return Response::toArray('Install is successfully done!');
+        return Response::toArray(true);
     }
 }

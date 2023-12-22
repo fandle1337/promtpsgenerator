@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class ControllerPromptAdd extends ControllerAbstract
 {
     public function __construct(
-        protected ServicePrompt    $servicePrompt,
+        protected ServicePrompt $servicePrompt,
     )
     {
     }
@@ -22,7 +22,7 @@ class ControllerPromptAdd extends ControllerAbstract
     {
         $dtoPrompt = new DtoPrompt(
             categories: $this->getRequestValue($request, 'categories'),
-            code: $this->servicePrompt->setCodeForPrompt(),
+            code: $this->servicePrompt->generateCodeForPrompt(),
             icon: $this->getRequestValue($request, 'icon'),
             prompt: $this->getRequestValue($request, 'prompt'),
             ruName: $this->getRequestValue($request, 'ru_name'),
@@ -33,10 +33,9 @@ class ControllerPromptAdd extends ControllerAbstract
             section: $this->getRequestValue($request, 'section' ?? null),
         );
 
-
         try {
             $this->servicePrompt->add($dtoPrompt);
-            return Response::toArray('prompt is successfully added');
+            return Response::toArray(true);
 
         } catch (ExceptionPrompt $e) {
             return Response::toArray(

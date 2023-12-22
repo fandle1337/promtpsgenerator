@@ -22,7 +22,7 @@
                     type="text"
                     :modelValue="nameRu"
                     @update:modelValue="changeNameRu"
-                    :class="{'p-invalid': !fieldValid.nameRu.value && formSubmitted}"
+                    :class="{'p-invalid': !nameRuIsValid && formSubmitted}"
                 />
             </div>
             <div class="col-6 d-flex flex-column">
@@ -39,7 +39,7 @@
                     type="text"
                     :modelValue="nameEng"
                     @update:modelValue="changeNameEng"
-                    :class="{'p-invalid': !fieldValid.nameEng.value && formSubmitted}"
+                    :class="{'p-invalid': !nameEngIsValid && formSubmitted}"
                 />
             </div>
         </div>
@@ -56,7 +56,7 @@
                     rows="7"
                     :model-value="prompt"
                     @update:modelValue="changePrompt"
-                    :class="{'p-invalid': !fieldValid.prompt.value && formSubmitted}"
+                    :class="{'p-invalid': !promptIsValid && formSubmitted}"
                 />
             </div>
             <div class="col-4 d-flex flex-column">
@@ -88,7 +88,7 @@
                 </label>
                 <MultiSelect
                     :model-value="categories"
-                    :class="{'w-100': true, 'p-invalid': !fieldValid.categories.value && formSubmitted}"
+                    :class="{'w-100': true, 'p-invalid': !categoriesIsValid && formSubmitted}"
                     id="categories"
                     :maxSelectedLabels="3"
                     optionLabel="name"
@@ -110,18 +110,16 @@
                         type="text"
                         :modelValue="icon"
                         @update:modelValue="changeIcon"
-                        :class="{'p-invalid': !fieldValid.icon.value && formSubmitted, 'w-50': true}"
+                        :class="{'p-invalid': !iconIsValid && formSubmitted, 'w-50': true}"
                     />
                     <a class="mt-2 mr-5" href="https://dev.1c-bitrix.ru/upload/api_help/rest/copilot_icon_set.pdf"
                        target="_blank">
                         <i class="pi pi-download ml-2" style="font-size: 1.5rem"
                            v-tooltip="'Ссылка на pdf-файл'"></i>
                     </a>
-<!--                    <div v-if="icon">
-                        <img :src="'https://skyweb24.ru/bitrix/js/ui/icon-set/main/images/' + icon +'.svg'"
-                             alt=""
-                             style="width: 50px; height: 50px;">
-                    </div>-->
+                    <!--                    <div>
+                                            <div class="ui-icon-set &#45;&#45;sigma-summ" style="&#45;&#45;ui-icon-set__icon-size: 24px;"></div>
+                                        </div>-->
                 </div>
             </div>
         </div>
@@ -152,6 +150,7 @@
                                v-tooltip="'Выберите секцию, в которой хотите разместить ваш промпт. Необязательный параметр.'"></i>
                         </label>
                         <Dropdown
+                            showClear
                             class="w-100"
                             id="section"
                             :options="sectionList"
@@ -293,36 +292,6 @@ const changeSection = function (event) {
     section.value = event
 }
 
-
-const fieldValid = {
-    nameRu: ref(false),
-    nameEng: ref(false),
-    prompt: ref(false),
-    categories: ref(false),
-    icon: ref(false)
-}
-
-const validateInput = (value, refName) => {
-    if (refName === 'categories') {
-        if (value === undefined) {
-            return false
-        }
-        if (value.length > 0) {
-            fieldValid[refName].value = true
-            return true
-        }
-        fieldValid[refName].value = false
-        return false
-    }
-    if (!!value) {
-        fieldValid[refName].value = true
-        return true
-    }
-    fieldValid[refName].value = false
-    return false
-}
-
-const formSubmitted = ref(false)
 const formatCategories = function (categories) {
     const result = []
     categories.forEach(category => {
@@ -331,22 +300,57 @@ const formatCategories = function (categories) {
     return result
 }
 
+const isAdmin = computed(() => {
+    return store.state.settings.userPermissionGroup === 'A'
+})
+
+const nameRuIsValid = ref(false)
+const nameEngIsValid = ref(false)
+const iconIsValid = ref(false)
+const promptIsValid = ref(false)
+const categoriesIsValid = ref(false)
+
+const formSubmitted = ref(false)
+
 const submit = async function () {
+    if (!isAdmin.value) {
+        toast.add({
+            severity: 'error',
+            summary: 'Внимание!',
+            detail: 'Это действие доступно только администраторам портала.',
+            life: 3000,
+            closable: false,
+        })
+        return false
+    }
+
+    const validateInput = function (value, refName) {
+        const isValid = !!value;
+        [refName].value = isValid
+        return isValid
+    }
+
+    const validateCategories = function (value) {
+        const isValid = value !== undefined && value.length > 0
+        categoriesIsValid.value = isValid
+        return isValid
+    };
+
     formSubmitted.value = true
 
-    const nameRuIsValid = validateInput(nameRu.value, 'nameRu')
-    const nameEngIsValid = validateInput(nameEng.value, 'nameEng')
-    const promptIsValid = validateInput(prompt.value, 'prompt')
-    const categoriesIsValid = validateInput(categories.value, 'categories')
-    const iconIsValid = validateInput(icon.value, 'icon')
+    nameRuIsValid.value = validateInput(nameRu.value, 'nameRuIsValid')
+    nameEngIsValid.value = validateInput(nameEng.value, 'nameEngIsValid')
+    promptIsValid.value = validateInput(prompt.value, 'promptIsValid')
+    categoriesIsValid.value = validateCategories(categories.value)
+    iconIsValid.value = validateInput(icon.value, 'iconIsValid')
 
     const formIsValid = function () {
         return (
-            nameRuIsValid &&
-            nameEngIsValid &&
-            promptIsValid &&
-            categoriesIsValid &&
-            iconIsValid
+            nameRuIsValid.value &&
+            nameEngIsValid.value &&
+            promptIsValid.value &&
+            categoriesIsValid.value &&
+            iconIsValid.value
         )
     }
 
@@ -382,9 +386,13 @@ const submit = async function () {
                     life: 3000,
                     closable: false,
                 })
+                store.state.prompts.isLoading = true
                 store.dispatch('prompts/updatePromptList').then(() => {
                     store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
+                }).then(() => {
+                    store.state.prompts.isLoading = false
                 })
+
             })
         }).catch((error) => {
             toast.add({

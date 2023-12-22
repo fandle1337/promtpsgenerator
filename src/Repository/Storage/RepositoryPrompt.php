@@ -8,31 +8,40 @@ use App\Model\ModelPrompt;
 
 class RepositoryPrompt
 {
-    public function getByPortalId(DtoFilter $dtoFilter, int $portalId): array
+    public function getAllByPortalId(DtoFilter $dtoFilter, int $portalId): array
     {
         $query = ModelPrompt::where('portal_id', $portalId);
 
-        if ($dtoFilter->category !== '') {
-            $query->whereJsonContains('categories', $dtoFilter->category);
+        if (!empty($dtoFilter->category)) {
+            $query->whereHas('categories', function ($query) use ($dtoFilter) {
+                $query->where('prompt_categories.code', $dtoFilter->category);
+            });
         }
 
-        $response = $query->get();
+        $prompts = $query->get();
 
-        foreach ($response as $row) {
+        if ($prompts->isEmpty()) {
+            return [];
+        }
+
+        foreach ($prompts as $prompt) {
+
+            $categories = $prompt->categories->pluck('code')->toArray();
+
             $result[] = new DtoPrompt(
-                $row->id,
-                $row->portal_id,
-                json_decode($row->categories),
-                $row->code,
-                $row->icon,
-                $row->prompt,
-                $row->ru_name,
-                $row->en_name,
-                $row->parent_code,
-                $row->sort,
-                $row->date_created,
+                $prompt->id,
+                $prompt->portal_id,
+                $categories,
+                $prompt->code,
+                $prompt->icon,
+                $prompt->prompt,
+                $prompt->ru_name,
+                $prompt->en_name,
+                $prompt->parent_code,
+                $prompt->sort,
+                $prompt->date_created,
                 null,
-                $row->section,
+                $prompt->section,
             );
         }
 
@@ -41,11 +50,10 @@ class RepositoryPrompt
 
     public function add(DtoPrompt $dtoPrompt): bool
     {
-        $id = ModelPrompt::InsertGetId([
+        $prompt = ModelPrompt::create([
             'portal_id'    => $dtoPrompt->portalId,
             'ru_name'      => $dtoPrompt->ruName,
             'en_name'      => $dtoPrompt->enName,
-            'categories'   => json_encode($dtoPrompt->categories),
             'code'         => $dtoPrompt->code,
             'icon'         => $dtoPrompt->icon,
             'prompt'       => $dtoPrompt->prompt,
@@ -55,43 +63,38 @@ class RepositoryPrompt
             'section'      => $dtoPrompt->section,
         ]);
 
-        if (empty($id)) {
-            return false;
-        }
-        return true;
+        $prompt->categories()->attach($dtoPrompt->categories);
+
+        return (bool)$prompt->id;
     }
 
     public function deleteById(int $promptId, int $portalId): bool
     {
-        $response = ModelPrompt::where('portal_id', $portalId)
-            ->where('id', $promptId)
-            ->delete();
-
-        return $response > 0;
+        return (bool)ModelPrompt::where('portal_id', $portalId)->where('id', $promptId)->delete();
     }
 
-    public function isUniqueCodeByPortalId(int $portalId, string $code): bool
+    public function isHasByPortalId(int $portalId, string $code): bool
     {
         $result = ModelPrompt::where('portal_id', $portalId)
             ->where('code', $code)
             ->count();
 
-        return $result == 0;
+        return $result !== 0;
     }
 
-    public function getCodeById(int $promptId): string
+    public function getCodeById(int $promptId): string|bool
     {
-        $result = ModelPrompt::where('id', $promptId)
-            ->first();
+        $result = ModelPrompt::where('id', $promptId)->first();
+
+        if (!$result) {
+            return false;
+        }
 
         return $result->code;
     }
 
     public function deleteAllByPortalId(int $portalId): bool
     {
-        $result = ModelPrompt::where('portal_id', $portalId)
-            ->delete();
-
-        return $result > 0;
+        return (bool)ModelPrompt::where('portal_id', $portalId)->delete();
     }
 }

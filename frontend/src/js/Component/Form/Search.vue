@@ -46,14 +46,16 @@ const store = useStore()
 const displayTemplates = computed(() => store.state.prompts.filter.showTemplates)
 const changeTemplates = function (event) {
     store.state.prompts.filter.showTemplates = event
+    store.state.prompts.isLoading = true
     store.dispatch('prompts/updatePromptList').then(() => {
         store.dispatch('prompts/addCountForPlacements', store.state.prompts.promptsList)
     })
+    store.state.prompts.isLoading = false
 }
 
 const promptsCollapsed = computed(() => store.state.prompts.options.promptsCollapsed)
 const toggleCollapse = function () {
-    store.dispatch('prompts/updatePromptsCollapsed')
+    store.commit('prompts/togglePromptsCollapsed')
 }
 const getCollapseLabel = computed(() => {
     if (promptsCollapsed.value) {

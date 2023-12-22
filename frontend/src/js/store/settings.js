@@ -8,22 +8,25 @@ export default {
     namespaced: true,
     state() {
         return {
-            appSettings: {
-                domain: null,
-                moduleCode: null,
-                userId: null,
-                isAdmin: null,
-                isAvailable: null,
-            },
+            domain: null,
+            moduleCode: null,
+            userId: null,
+            userPermissionGroup: null,
+
         }
     },
     mutations: {
-        updateAppSettings(state, value) {
-            state.appSettings.domain = value.domain
-            state.appSettings.moduleCode = value.module_code
-            state.appSettings.userId = value.user_id
-            state.appSettings.isAdmin = value.is_admin
-            state.appSettings.isAvailable = value.is_available
+        updateDomain(state, value) {
+            state.domain = value
+        },
+        updateModuleCode(state, value) {
+            state.moduleCode = value
+        },
+        updateUserId(state, value) {
+            state.userId = value
+        },
+        updateUserPermissionGroup(state, value) {
+            state.userPermissionGroup = value
         }
     },
     actions: {
@@ -35,7 +38,10 @@ export default {
         },
         async updateAppSettings(context, payload) {
             const response = await context.dispatch("fetchAppSettings", payload)
-            context.commit("updateAppSettings", response)
+            context.commit("updateDomain", response.domain)
+            context.commit("updateModuleCode", response.module_code)
+            context.commit("updateUserId", response.user_id)
+            context.commit("updateUserPermissionGroup", response.user_permission_group)
         },
     },
 }

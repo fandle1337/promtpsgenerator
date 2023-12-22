@@ -7,7 +7,7 @@ use App\Model\ModelPortal;
 
 class RepositoryPortal
 {
-    public function add(DtoPortal $dtoPortal)
+    public function addOrUpdate(DtoPortal $dtoPortal)
     {
         return ModelPortal::updateOrCreate(
             ['domain' => $dtoPortal->domain],
@@ -23,9 +23,14 @@ class RepositoryPortal
         );
     }
 
-    public function getByMemberId(string $memberId): ?DtoPortal
+    public function getByMemberId(string $memberId): DtoPortal|bool
     {
         $result = ModelPortal::where('member_id', $memberId)->first();
+
+        if (!$result) {
+            return false;
+        }
+
         return new DtoPortal(
             $result->id,
             $result->domain,
@@ -39,9 +44,13 @@ class RepositoryPortal
         );
     }
 
-    public function getByDomain(string $domain): ?DtoPortal
+    public function getByDomain(string $domain): DtoPortal|bool
     {
         $result = ModelPortal::where('domain', $domain)->first();
+
+        if (!$result) {
+            return false;
+        }
         return new DtoPortal(
             $result->id,
             $result->domain,

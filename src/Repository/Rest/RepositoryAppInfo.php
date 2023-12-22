@@ -4,33 +4,15 @@ namespace App\Repository\Rest;
 
 class RepositoryAppInfo extends RepositoryRestAbstract
 {
-    private static array $appInfo = [];
-
-    public function getInfo(): array
+    public function getLicence(): string
     {
-        if (empty(static::$appInfo)) {
-            $res = $this->client->call('app.info');
-            static::$appInfo = $res['result'];
-        }
-        return static::$appInfo;
+        $response = $this->client->call('app.info');
+        return $response['LICENSE_FAMILY'] ?? str_replace($response['LANGUAGE_ID'] . '_', '', $response['LICENSE']);
     }
 
-    public function getAppId(): mixed
+    public function getLanguage(): string
     {
-        $infoCompany = $this->getInfo();
-        return $infoCompany['ID'];
-    }
-
-    public function getLicence(): mixed
-    {
-        $infoCompany = $this->getInfo();
-        return $infoCompany['LICENSE_FAMILY'] ?? str_replace($infoCompany['LANGUAGE_ID'] . '_', '', $infoCompany['LICENSE']);
-    }
-
-    public function getLanguage(): mixed
-    {
-        $infoCompany = $this->getInfo();
-        return $infoCompany['LANGUAGE_ID'];
+        return $this->client->call('app.info')['LANGUAGE_ID'];
     }
 
 }

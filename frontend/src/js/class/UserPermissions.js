@@ -11,13 +11,3 @@ export function checkUserPermissionByName(routeName) {
 export function checkUserPermission(routePermissions, userPermission) {
     return routePermissions.includes(userPermission) || routePermissions.length === 0
 }
-
-export function hasRightsToEdit() {
-    if (store.state.settings.appSettings.user_permission_group === 'A') {
-        return true
-    }
-    let hrUserList = (store.state.settings.hrUserList === "") ? [] : store.state.settings.hrUserList
-    return !!hrUserList.find(x => x.id === parseInt(store.state.settings.appSettings.user_id))
-
-
-}

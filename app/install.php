@@ -1,5 +1,7 @@
 <?php
 
+use App\Helper\HelperFileVersion;
+
 require_once dirname(__DIR__) . "/config/bootstrap.php";
 
 ?>
@@ -14,7 +16,7 @@ require_once dirname(__DIR__) . "/config/bootstrap.php";
     <link rel="stylesheet" href="https://dev.1c-bitrix.ru/bitrix/js/ui/buttons/src/css/ui.buttons.css">
     <link rel="stylesheet" href="https://dev.1c-bitrix.ru/bitrix/js/ui/forms/ui.forms.min.css">
     <title>Установка приложения</title>
-    <link rel="stylesheet" href="<?=$_ENV['WORK_DIRECTORY']?>/dist/content.bundle.css">
+    <link rel="stylesheet" href="<?= HelperFileVersion::get('/app/dist/install.bundle.css') ?>">
 </head>
 <body>
 
@@ -24,6 +26,6 @@ require_once dirname(__DIR__) . "/config/bootstrap.php";
     const AUTH_OBJECT = <?=(new \Sw24\Bitrix24Auth\Bitrix24Client())->getAuthObject();?>;
 </script>
 <script src="//api.bitrix24.com/api/v1/"></script>
-<script src="<?=$_ENV['WORK_DIRECTORY']?>/dist/install.bundle.js"></script>
+<script src="<?= HelperFileVersion::get('/app/dist/install.bundle.js') ?>"></script>
 </body>
 </html>

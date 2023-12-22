@@ -2,7 +2,7 @@
 
 namespace App\Dto;
 
-class DtoPrompt extends DtoAbstract
+class DtoPrompt
 {
     public function __construct(
         public ?int    $id = null,
@@ -20,6 +20,5 @@ class DtoPrompt extends DtoAbstract
         public ?string $section = null,
     )
     {
-        parent::__construct();
     }
 }

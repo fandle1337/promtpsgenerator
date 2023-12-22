@@ -18,7 +18,7 @@ class RepositoryFilter extends RepositoryRestAbstract
         );
     }
 
-    public function set(DtoFilter $dtoFilter): bool
+    public function updateOrCreate(DtoFilter $dtoFilter): bool
     {
         $response = $this->client->call(
             'user.option.set',

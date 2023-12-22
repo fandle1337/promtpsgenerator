@@ -3,53 +3,69 @@
 namespace App\Repository\Storage;
 
 use App\Dto\DtoFilter;
-use App\Dto\DtoPrompt;
 use App\Dto\DtoTemplate;
 use App\Model\ModelTemplate;
 
 class RepositoryTemplate
 {
     /**
-     * @return DtoTemplate[]
+     * @param DtoFilter $dtoFilter
+     * @return array
      */
     public function getAll(DtoFilter $dtoFilter): array
     {
         $query = ModelTemplate::query();
 
-        if ($dtoFilter->category !== '') {
-            $query->whereJsonContains('categories', $dtoFilter->category);
+        if (!empty($dtoFilter->category)) {
+            $query->whereHas('categories', function ($query) use ($dtoFilter) {
+                $query->where('template_categories.code', $dtoFilter->category);
+            });
         }
 
-        $response = $query->get();
+        $templates = $query->get();
 
-        foreach ($response as $row) {
+        if ($templates->isEmpty()) {
+            return [];
+        }
+
+        foreach ($templates as $template) {
+
+            $categories = $template->categories->pluck('code')->toArray();
+
             $result[] = new DtoTemplate(
-                $row->id,
+                $template->id,
                 null,
-                json_decode($row->categories),
-                $row->code,
-                $row->icon,
-                $row->prompt,
-                $row->ru_name,
-                $row->en_name,
-                $row->parent_code,
-                $row->sort,
-                $row->date_created,
+                $categories,
+                $template->code,
+                $template->icon,
+                $template->prompt,
+                $template->ru_name,
+                $template->en_name,
+                $template->parent_code,
+                $template->sort,
+                $template->date_created,
                 true,
-                $row->section,
+                $template->section,
             );
         }
+
         return $result ?? [];
     }
 
-    public function getById(int $templateId): DtoTemplate
+    public function getById(int $templateId): DtoTemplate|bool
     {
         $result = ModelTemplate::where('id', $templateId)->first();
+
+        if (!$result) {
+            return false;
+        }
+
+        $categories = $result->categories()->pluck('template_categories.code')->toArray();
 
         return new DtoTemplate(
             $result->id,
             null,
-            json_decode($result->categories),
+            $categories,
             $result->code,
             $result->icon,
             $result->prompt,
